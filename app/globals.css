@@ -27,12 +27,18 @@
     @apply border-border;
   }
   body {
-    @apply font-sans;
+    @apply bg-background text-muted-foreground text-sm font-sans;
   }
   h1,
   h2,
   h3,
   h4 {
-    @apply font-medium leading-tight tracking-tight font-serif;
+    @apply text-foreground font-medium leading-tight tracking-tight font-serif;
+  }
+}
+
+@layer utilities {
+  .container {
+    @apply mx-auto max-w-5xl px-1;
   }
 }
