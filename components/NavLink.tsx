@@ -26,7 +26,8 @@ export default function NavLink({
             isActive ? "text-foreground fill-current" : "text-muted-foreground"
           }`}
         >
-          <Icon className="w-5 h-5" /> <span className="sr-only">{name}</span>
+          <Icon className="w-5 h-5 group-hover:scale-110 duration-300" />{" "}
+          <span className="sr-only">{name}</span>
         </div>
         <span className="absolute -top-12 transition-all duration-200 bg-secondary p-1 rounded-md left-1/2 -translate-x-1/2 md:top-auto md:-bottom-12 invisible group-hover:visible">
           {name}

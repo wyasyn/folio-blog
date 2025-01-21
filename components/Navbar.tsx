@@ -1,6 +1,8 @@
 "use client";
 import { Contact, LayoutDashboard, Newspaper, User } from "lucide-react";
 import NavLink from "./NavLink";
+import Logo from "./Logo";
+import ModeToggle from "./modeToggle";
 
 export default function Navbar() {
   const navLinks = [
@@ -26,9 +28,10 @@ export default function Navbar() {
     },
   ];
   return (
-    <header className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-secondary/85 backdrop-blur-sm p-3 rounded-full border md:top-4 md:bottom-auto">
-      <nav>
-        <ul className="flex items-center justify-center gap-6">
+    <header className="fixed bottom-4 left-0 z-50  md:top-4 md:bottom-auto w-full">
+      <nav className="container flex items-center justify-between gap-4">
+        <Logo />
+        <ul className="flex items-center justify-center gap-6 bg-secondary/85 backdrop-blur-sm p-3 rounded-full border">
           {navLinks.map((item) => {
             return (
               <NavLink
@@ -40,6 +43,7 @@ export default function Navbar() {
             );
           })}
         </ul>
+        <ModeToggle />
       </nav>
     </header>
   );
