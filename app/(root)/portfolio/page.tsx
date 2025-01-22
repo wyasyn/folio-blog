@@ -1,4 +1,4 @@
-import SelectedWorks from "@/components/SelectedWorks";
+import FeaturedProjects from "@/components/FeaturedProjects";
 
 export default function page() {
   return (
@@ -9,7 +9,7 @@ export default function page() {
         See how I transformed concepts into engaging digital experiences.
       </p>
 
-      <SelectedWorks />
+      <FeaturedProjects />
     </div>
   );
 }

@@ -18,7 +18,7 @@ export default function MovingCards() {
 
   return (
     <div
-      className="relative mx-auto md:max-w-[400px] lg:max-w-[500px] xl:max-w-[720px] fade-mask"
+      className="relative mx-auto md:max-w-[400px] lg:max-w-[500px] xl:max-w-[670px] fade-mask"
       ref={containerRef}
     >
       <motion.div
@@ -34,10 +34,13 @@ export default function MovingCards() {
         {toolsAndTechnologies.concat(toolsAndTechnologies).map((tool, idx) => (
           <div
             key={idx}
-            className={`flex hover:shadow-sm duration-300 transition-all hover:shadow-primary shrink-0 bg-secondary p-4 rounded-xl items-center gap-3 ${
+            className={`flex group relative hover:shadow-sm duration-300 transition-all hover:shadow-primary shrink-0 bg-secondary p-4 rounded-xl items-center gap-3 ${
               idx % 2 === 0 ? "rotate-6" : "-rotate-6"
             }`}
           >
+            <span className="absolute -top-12 border invisible group-hover:visible duration-300 transition-all bg-secondary p-2 left-1/2 -translate-x-1/2 rounded-lg shadow-sm shadow-primary">
+              {tool.name}
+            </span>
             <span
               className="text-muted-foreground text-5xl"
               aria-label={tool.name}

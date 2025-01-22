@@ -10,9 +10,10 @@ export default function page() {
         <h2 className="text-3xl text-balance mb-4 capitalize">
           Building exceptional user experiences
         </h2>
-        <p className="mb-4 text-pretty max-w-[40ch]">
-          I specialize in transforming designs into functional, high performing
-          web applications. Let&apos;s discuss your next project.
+        <p className="mb-4 text-pretty max-w-[50ch]">
+          I transform ideas into impactful digital experiences, delivering
+          innovative solutions that elevate brands and captivate audiences
+          around the world.
         </p>
         <div className="flex flex-col min-[341px]:flex-row items-center gap-4 justify-center md:justify-start">
           <SecondaryBtn text="Explore my work" link="/portfolio" />

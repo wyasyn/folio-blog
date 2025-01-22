@@ -20,7 +20,9 @@ export default function PortfolioCard({
           alt={title}
         />
         <div className="absolute inset-0 z-20 flex flex-col justify-end px-4 pb-8 md:pb-3 md:px-3 bg-gradient-to-t from-background via-transparent to-transparent">
-          <h3 className="text-lg truncate capitalize">{title}</h3>
+          <h3 className=" font-sans truncate group-hover:text-primary capitalize duration-300">
+            {title}
+          </h3>
         </div>
       </article>
     </Link>

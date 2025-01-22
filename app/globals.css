@@ -76,3 +76,11 @@
     rgba(255, 255, 255, 0)
   );
 }
+
+.input {
+  @apply border p-3 text-muted-foreground placeholder:text-muted-foreground rounded-lg focus-within:border-primary/50 duration-300 transition-all outline-none w-full;
+}
+
+.submit-btn {
+  @apply bg-foreground px-4 py-2 text-background rounded-lg hover:bg-muted-foreground duration-300 ease-in-out transition-all mt-6 focus-within:ring-1 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background;
+}
