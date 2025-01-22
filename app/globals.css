@@ -42,3 +42,37 @@
     @apply mx-auto max-w-5xl px-1;
   }
 }
+
+.fade-mask {
+  position: relative;
+  overflow: hidden;
+}
+
+.fade-mask::before,
+.fade-mask::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 10%; /* Adjust width for stronger fading */
+  pointer-events: none;
+  z-index: 10;
+}
+
+.fade-mask::before {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    hsl(var(--background)),
+    rgba(255, 255, 255, 0)
+  );
+}
+
+.fade-mask::after {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    hsl(var(--background)),
+    rgba(255, 255, 255, 0)
+  );
+}

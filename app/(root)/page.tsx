@@ -1,6 +1,7 @@
 import PrimaryBtn from "@/components/PrimaryBtn";
 import SecondaryBtn from "@/components/SecondaryBtn";
 import SelectedWorks from "@/components/SelectedWorks";
+import Skills from "@/components/Skills";
 
 export default function page() {
   return (
@@ -19,6 +20,7 @@ export default function page() {
         </div>
       </div>
       <SelectedWorks />
+      <Skills />
     </div>
   );
 }
