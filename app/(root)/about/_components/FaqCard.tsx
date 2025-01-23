@@ -15,7 +15,7 @@ export default function FaqCard({
   return (
     <div>
       <div className="bg-secondary rounded-xl flex items-center justify-between">
-        <h2 className="px-4">{question}</h2>
+        <h2 className="px-4 font-sans">{question}</h2>
         <AnimatePresence>
           {showAnswer ? (
             <motion.button

@@ -1,12 +1,13 @@
 export default function page() {
   return (
     <div id="contact">
-      <small className="uppercase text-primary">Contact me</small>
-      <h2 className="capitalize text-3xl my-3">Let&apos;s get in touch</h2>
-      <p className="max-w-[30ch]">
-        Whether you&apos;re looking to start a new project or simply want to
-        chat, feel free to reach out to me!
+      <small className="uppercase text-primary">Contact</small>
+      <h2 className="capitalize text-4xl my-4">Let’s Connect</h2>
+      <p className="max-w-[35ch]">
+        Have a project in mind or want to collaborate? I’d love to hear from
+        you! Reach out and let’s get started.
       </p>
+
       <div className="my-[3rem]">
         <form className="flex flex-col gap-4 max-w-[500px] ">
           <div className="flex max-[400px]:flex-col items-center gap-3 w-full">

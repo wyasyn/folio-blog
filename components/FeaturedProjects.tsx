@@ -1,6 +1,6 @@
 import { sampleWorks } from "@/lib/sampleWorks";
 import PortfolioCard from "./PortfolioCard";
-import Pagination from "./Pagination";
+
 import ProjectsFilter from "./ProjectsFilter";
 
 export default function FeaturedProjects() {
@@ -16,7 +16,6 @@ export default function FeaturedProjects() {
           />
         ))}
       </div>
-      <Pagination />
     </div>
   );
 }

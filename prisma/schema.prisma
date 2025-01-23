@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model BlogPost {
+  id         Int        @id @default(autoincrement())
+  title      String
+  excerpt    String
+  slug       String     @unique
+  image      String
+  body       String
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
+  categories Category[] @relation("BlogPostToCategory")
+
+  @@map("blog_posts")
+}
+
+model Project {
+  id         Int        @id @default(autoincrement())
+  title      String
+  excerpt    String
+  slug       String     @unique
+  image      String
+  body       String
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
+  categories Category[] @relation("ProjectToCategory")
+
+  @@map("projects")
+}
+
+model Category {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  slug      String     @unique
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  blogPosts BlogPost[] @relation("BlogPostToCategory")
+  projects  Project[]  @relation("ProjectToCategory")
+
+  @@map("categories")
+}

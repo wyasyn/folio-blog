@@ -44,9 +44,8 @@ export default function AsideBar() {
         <div>
           <h1 className="text-3xl mt-4">I&apos;m Yasin Walum</h1>
           <p className="max-w-[40ch] my-4">
-            Computer Scientist focused on Web development, Data Science,
-            Artificial Intelligence, Machine learning, Computer Graphics and
-            Software development.
+            Computer Scientist specializing in Web Development, AI, Machine
+            Learning, Data Science, and Software Development.
           </p>
           <div className="flex items-center gap-4 pt-2">
             {socials.map((item) => (

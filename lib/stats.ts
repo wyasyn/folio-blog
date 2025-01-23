@@ -31,28 +31,28 @@ export const stats = [
 
 export const FAQs = [
   {
-    question: " What services do you offer?",
+    question: "What services do you offer?",
     answer:
-      "I offer a range of services including web design, branding, digital marketing, UI/UX etc, each project is tailored to meet your unique needs and goals.",
+      "I specialize in a wide range of services, including custom web design, branding, digital marketing, and UI/UX design. Every project is personalized to meet your specific needs and goals, ensuring high-quality, user-centric results.",
   },
   {
-    question: " How do I get started on a project with you?",
+    question: "How do I get started on a project with you?",
     answer:
-      "I offer a range of services including web design, branding, digital marketing, UI/UX etc, each project is tailored to meet your unique needs and goals.",
+      "Getting started is simple! Just reach out via email or contact form. We’ll discuss your project needs, objectives, and vision. After understanding your requirements, I’ll provide a detailed proposal and timeline to move forward.",
   },
   {
-    question: " Can you help with creative direction or ideas?",
+    question: "Can you help with creative direction or ideas?",
     answer:
-      "I offer a range of services including web design, branding, digital marketing, UI/UX etc, each project is tailored to meet your unique needs and goals.",
+      "Absolutely! I’m passionate about brainstorming innovative ideas and guiding projects creatively. Whether you need branding inspiration, UI design concepts, or marketing strategies, I’m here to collaborate and turn your vision into reality.",
   },
   {
-    question: " What is your pricing structure?",
+    question: "What is your pricing structure?",
     answer:
-      "I offer a range of services including web design, branding, digital marketing, UI/UX etc, each project is tailored to meet your unique needs and goals.",
+      "My pricing is flexible and tailored to each project based on its scope, complexity, and timeline. After an initial consultation, I’ll provide a transparent quote. I strive to offer great value for the quality and results delivered.",
   },
   {
-    question: " Do you work with international clients?",
+    question: "Do you work with international clients?",
     answer:
-      "I offer a range of services including web design, branding, digital marketing, UI/UX etc, each project is tailored to meet your unique needs and goals.",
+      "Yes, I work with clients worldwide! With experience in remote collaboration, I use various communication and project management tools to ensure smooth, efficient workflows, no matter where you’re located.",
   },
 ];

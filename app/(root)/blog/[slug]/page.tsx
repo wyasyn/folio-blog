@@ -1,11 +1,14 @@
 import BackBtn from "@/components/BackBtn";
+import { MDXRemote } from "next-mdx-remote/rsc";
 
 type Params = Promise<{ slug: string }>;
 
 export async function generateMetadata(props: { params: Params }) {
   const params = await props.params;
   const slug = params.slug;
-  console.log(slug);
+  return {
+    title: slug,
+  };
 }
 
 export default async function Page(props: { params: Params }) {
@@ -17,7 +20,10 @@ export default async function Page(props: { params: Params }) {
       <div className="flex w-full items-center justify-end">
         <BackBtn />
       </div>
-      <h1>{slug}</h1>
+
+      <div>
+        <MDXRemote source={slug} />
+      </div>
     </div>
   );
 }
