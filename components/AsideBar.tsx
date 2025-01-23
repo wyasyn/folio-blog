@@ -72,7 +72,7 @@ function SocialIcon({
       href={link}
       className="hover:text-foreground transition-all duration-300"
       target="_blank"
-      rel="noreferrer"
+      rel="noopener noreferrer"
     >
       <Icon className="w-4 h-4" />
     </Link>

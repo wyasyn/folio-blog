@@ -1,7 +1,15 @@
 "use server";
 
-import prisma from "../db";
+import { prisma } from "../db";
 import { makeSlug } from "../utils";
+
+interface BlogPostInput {
+  title: string;
+  excerpt: string;
+  image: string;
+  body: string;
+  categories: string;
+}
 
 export const createPost = async ({
   title,
@@ -9,13 +17,11 @@ export const createPost = async ({
   image,
   body,
   categories, // New parameter to handle categories as a comma-separated string
-}: {
-  title: string;
-  excerpt: string;
-  image: string;
-  body: string;
-  categories: string; // Comma-separated string of categories
-}) => {
+}: BlogPostInput) => {
+  if (!title || !excerpt || !image || !body || !categories) {
+    return { error: "All fields are required" };
+  }
+
   const slug = makeSlug(title);
 
   try {
@@ -57,6 +63,9 @@ export const createPost = async ({
 };
 
 export const deleteBlogPost = async (slug: string) => {
+  if (!slug) {
+    return { error: "Slug is required" };
+  }
   try {
     const blogPost = await prisma.blogPost.findUnique({
       where: { slug },
@@ -74,36 +83,117 @@ export const deleteBlogPost = async (slug: string) => {
     return { message: "Blog post deleted successfully" };
   } catch (error) {
     console.error(error);
-    return { error: "An error occurred while deleting the blog post" };
+    return { error: `Failed to delete blog post with slug: ${slug}` };
   }
 };
 
 export async function getPaginatedBlogPosts(page = 1, pageSize = 4) {
-  const skip = (page - 1) * pageSize;
+  // Ensure valid pagination inputs
+  const currentPage = Math.max(page, 1); // Minimum value is 1
+  const validPageSize = Math.max(pageSize, 1); // Minimum value is 1
+  const skip = (currentPage - 1) * validPageSize;
 
-  const [blogPosts, total] = await Promise.all([
-    prisma.blogPost.findMany({
-      skip,
-      take: pageSize,
-      orderBy: {
-        createdAt: "desc",
+  try {
+    // Fetch paginated blog posts and total count in parallel
+    const [blogPosts, total] = await prisma.$transaction([
+      prisma.blogPost.findMany({
+        skip,
+        take: validPageSize,
+        orderBy: { createdAt: "desc" },
+        include: { categories: true },
+      }),
+      prisma.blogPost.count(),
+    ]);
+
+    // Calculate total pages only if there are blog posts
+    const totalPages = total > 0 ? Math.ceil(total / validPageSize) : 0;
+
+    return {
+      blogPosts,
+      pagination: {
+        currentPage,
+        totalPages,
+        pageSize: validPageSize,
+        total,
       },
-      include: {
-        categories: true,
-      },
-    }),
-    prisma.blogPost.count(),
-  ]);
+    };
+  } catch (error) {
+    console.error("Error fetching paginated blog posts:", error);
+    throw new Error("An error occurred while fetching blog posts");
+  }
+}
 
-  const totalPages = Math.ceil(total / pageSize);
+export async function editBlogPost({
+  slug,
+  title,
+  excerpt,
+  image,
+  body,
+  categories, // Comma-separated string of categories
+}: {
+  slug: string;
+  title?: string;
+  excerpt?: string;
+  image?: string;
+  body?: string;
+  categories?: string;
+}) {
+  try {
+    // Validate that the blog post exists
+    const blogPost = await prisma.blogPost.findUnique({ where: { slug } });
+    if (!blogPost) {
+      return { error: "Blog post not found" };
+    }
 
-  return {
-    blogPosts,
-    pagination: {
-      currentPage: page,
-      totalPages,
-      pageSize,
-      total,
-    },
-  };
+    // Define the type for updated data
+    type BlogPostUpdateInput = {
+      title?: string;
+      excerpt?: string;
+      image?: string;
+      body?: string;
+      slug?: string;
+      categories?: {
+        set: { id: number }[];
+      };
+    };
+
+    const updatedData: BlogPostUpdateInput = {};
+
+    // Populate updatedData with the provided fields
+    if (title) {
+      updatedData.title = title;
+      updatedData.slug = makeSlug(title);
+    }
+    if (excerpt) updatedData.excerpt = excerpt;
+    if (image) updatedData.image = image;
+    if (body) updatedData.body = body;
+
+    // Handle categories
+    if (categories) {
+      const categoryNames = categories.split(",").map((c) => c.trim());
+      const existingCategories = await Promise.all(
+        categoryNames.map(async (categoryName) =>
+          prisma.category.upsert({
+            where: { name: categoryName },
+            update: {},
+            create: { name: categoryName, slug: makeSlug(categoryName) },
+          })
+        )
+      );
+      updatedData.categories = {
+        set: existingCategories.map((category) => ({ id: category.id })),
+      };
+    }
+
+    // Update the blog post
+    const updatedBlogPost = await prisma.blogPost.update({
+      where: { slug },
+      data: updatedData,
+    });
+
+    return { message: "Blog post updated successfully", updatedBlogPost };
+  } catch (error) {
+    console.error("Error updating blog post:", error);
+    return { error: "An error occurred while updating the blog post" };
+  }
 }

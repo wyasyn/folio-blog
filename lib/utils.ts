@@ -10,3 +10,7 @@ export const makeSlug = (str: string) => {
   const slug = slugify(str, { lower: true, strict: true });
   return slug;
 };
+
+export function joinWithCommas(strings: string[]): string {
+  return strings.join(", ");
+}
