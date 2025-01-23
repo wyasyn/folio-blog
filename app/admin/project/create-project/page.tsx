@@ -1,3 +1,4 @@
+"use client";
 import Form, { FormData } from "@/components/Form";
 import React from "react";
 

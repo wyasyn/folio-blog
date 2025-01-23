@@ -1,15 +1,8 @@
 "use server";
 
+import { FormData } from "@/components/Form";
 import { prisma } from "../db";
 import { makeSlug } from "../utils";
-
-interface BlogPostInput {
-  title: string;
-  excerpt: string;
-  image: string;
-  body: string;
-  categories: string;
-}
 
 export const createPost = async ({
   title,
@@ -17,7 +10,7 @@ export const createPost = async ({
   image,
   body,
   categories, // New parameter to handle categories as a comma-separated string
-}: BlogPostInput) => {
+}: FormData) => {
   if (!title || !excerpt || !image || !body || !categories) {
     return { error: "All fields are required" };
   }

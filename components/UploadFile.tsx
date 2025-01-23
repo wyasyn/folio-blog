@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 const FileUpload = () => {
   const [fileContent, setFileContent] = useState<string | null>(null);
@@ -22,7 +23,7 @@ const FileUpload = () => {
 
       reader.readAsText(file);
     } else {
-      alert("Please upload a valid .md or .mdx file");
+      toast.error("Please upload a valid .md or .mdx file");
     }
   };
 
