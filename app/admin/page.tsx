@@ -5,7 +5,7 @@ export default async function page() {
 
   return (
     <div className="md:pt-12">
-      <div className="grid gap-3 mb-12 grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
+      <div className="grid gap-3 mb-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         <div className="bg-secondary p-3 rounded-lg border">
           Total Projects:{" "}
           <span className="font-semibold text-lg ml-3">
