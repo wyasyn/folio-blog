@@ -17,7 +17,7 @@ export default function NavLink({
   >;
 }) {
   const pathname = usePathname();
-  const isActive = pathname === link;
+  const isActive = link === "/" ? pathname === link : pathname.startsWith(link);
   return (
     <li>
       <Link href={link} className="relative group">

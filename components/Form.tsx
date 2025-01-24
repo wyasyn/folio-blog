@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import MdIcon from "@/assets/substance.png";
+import Image from "next/image";
 
 interface FormProps {
   onSubmit: (data: FormData) => Promise<void>;
@@ -84,8 +86,32 @@ const Form: React.FC<FormProps> = ({
       {formData.body !== undefined && (
         <label className="flex flex-col gap-3">
           Body:
-          <div>
-            <input type="file" accept=".md,.mdx" onChange={handleFileChange} />
+          <div className="relative w-full max-w-[250px] cursor-pointer aspect-square md:aspect-video bg-secondary rounded-xl border grid place-items-center border-dotted mx-auto">
+            <div className="flex flex-col gap-3 items-center justify-center text-center p-3">
+              <Image
+                src={MdIcon.src}
+                alt="md icon"
+                width={MdIcon.width}
+                height={MdIcon.height}
+                className="w-10 h-10 object-contain"
+              />
+              <p className="text-xs">
+                Drag and drop your Markdown (.md,.mdx) file here or click to
+                select it.
+                {formData.body && (
+                  <span className="text-sm text-primary">
+                    Preview: {formData.body.slice(0, 30)}...
+                  </span>
+                )}
+              </p>
+            </div>
+
+            <input
+              className="absolute inset-0 z-1 opacity-0 cursor-pointer"
+              type="file"
+              accept=".md,.mdx"
+              onChange={handleFileChange}
+            />
           </div>
         </label>
       )}

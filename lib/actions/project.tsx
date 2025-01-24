@@ -1,15 +1,8 @@
 "use server";
 
+import { FormData } from "@/components/Form";
 import { prisma } from "../db";
 import { makeSlug } from "../utils";
-
-interface ProjectInput {
-  title: string;
-  excerpt: string;
-  image: string;
-  body: string;
-  categories: string;
-}
 
 export const createProject = async ({
   title,
@@ -17,7 +10,7 @@ export const createProject = async ({
   image,
   body,
   categories, // Categories as a comma-separated string
-}: ProjectInput) => {
+}: FormData) => {
   if (!title || !excerpt || !image || !body || !categories) {
     return { error: "All fields are required" };
   }
@@ -119,7 +112,7 @@ export async function getPaginatedProjects(page = 1, pageSize = 4) {
   }
 }
 
-export async function editProject({
+export const editProject = async ({
   id,
   title,
   description,
@@ -131,7 +124,7 @@ export async function editProject({
   description?: string;
   image?: string;
   categories?: string;
-}) {
+}) => {
   try {
     // Validate that the project exists
     const project = await prisma.project.findUnique({ where: { id } });
@@ -184,4 +177,23 @@ export async function editProject({
     console.error("Error updating project:", error);
     return { error: "An error occurred while updating the project" };
   }
-}
+};
+
+export const getProjectById = async (id: number) => {
+  try {
+    const project = await prisma.project.findUnique({
+      where: { id },
+      include: { categories: true },
+    });
+    if (!project) {
+      return { error: "Project not found", project: null };
+    }
+    return {
+      error: null,
+      project,
+    };
+  } catch (error) {
+    console.error("Error fetching project by ID:", error);
+    throw new Error("An error occurred while fetching project");
+  }
+};

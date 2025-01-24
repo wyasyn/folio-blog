@@ -117,14 +117,14 @@ export async function getPaginatedBlogPosts(page = 1, pageSize = 4) {
 }
 
 export async function editBlogPost({
-  slug,
+  id,
   title,
   excerpt,
   image,
   body,
   categories, // Comma-separated string of categories
 }: {
-  slug: string;
+  id: number;
   title?: string;
   excerpt?: string;
   image?: string;
@@ -133,7 +133,7 @@ export async function editBlogPost({
 }) {
   try {
     // Validate that the blog post exists
-    const blogPost = await prisma.blogPost.findUnique({ where: { slug } });
+    const blogPost = await prisma.blogPost.findUnique({ where: { id } });
     if (!blogPost) {
       return { error: "Blog post not found" };
     }
@@ -180,7 +180,7 @@ export async function editBlogPost({
 
     // Update the blog post
     const updatedBlogPost = await prisma.blogPost.update({
-      where: { slug },
+      where: { id },
       data: updatedData,
     });
 
@@ -190,3 +190,22 @@ export async function editBlogPost({
     return { error: "An error occurred while updating the blog post" };
   }
 }
+
+export const getBlogPostById = async (id: number) => {
+  try {
+    const blogPost = await prisma.blogPost.findUnique({
+      where: { id },
+      include: { categories: true },
+    });
+    if (!blogPost) {
+      return { error: "Blog post not found", blogPost: null };
+    }
+    return {
+      error: null,
+      blogPost,
+    };
+  } catch (error) {
+    console.error("Error fetching blog post by ID:", error);
+    throw new Error("An error occurred while fetching blog post");
+  }
+};

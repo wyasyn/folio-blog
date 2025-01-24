@@ -1,28 +1,27 @@
+"use client";
+
 import Form, { FormData } from "@/components/Form";
-import { editBlogPost } from "@/lib/actions/posts";
+import { editProject } from "@/lib/actions/project";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-
-interface BlogPostProps {
+interface projectProps {
   title: string;
   excerpt: string | undefined;
   image: string | undefined;
   body: string | undefined;
   categories: string;
 }
-
-function EditBlogPost({
+function EditProjectComponent({
   id,
-  blogPost,
+  project,
 }: {
   id: number;
-  blogPost: BlogPostProps;
+  project: projectProps;
 }) {
   const router = useRouter();
-  const editBlogPostFunc = async (data: FormData) => {
+  const editProjectFunc = async (data: FormData) => {
     try {
-      const { message, error } = await editBlogPost({ ...data, id });
-
+      const { message, error } = await editProject({ ...data, id });
       if (message) {
         toast.success(message);
         router.refresh();
@@ -30,18 +29,18 @@ function EditBlogPost({
         toast.error(error);
       }
     } catch (error) {
-      toast.error("An error occurred while updating the blog post");
-      console.error("Error updating blog post:", error);
+      console.error("Error updating project:", error);
+      toast.error("An error occurred while updating the project");
     }
   };
 
   return (
     <Form
-      onSubmit={editBlogPostFunc}
-      initialData={blogPost}
-      buttonText="Edit Blog Post"
+      onSubmit={editProjectFunc}
+      initialData={project}
+      buttonText="Edit Project"
     />
   );
 }
 
-export default EditBlogPost;
+export default EditProjectComponent;
