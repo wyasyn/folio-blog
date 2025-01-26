@@ -1,12 +1,18 @@
 "use client";
-import { Briefcase, File, LayoutDashboard } from "lucide-react";
+
+import { Briefcase, File, Home, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const adminLinks = [
   {
+    name: "Home",
+    link: "/",
+    icon: Home,
+  },
+  {
     name: "Dashboard",
-    link: "/admin/",
+    link: "/admin",
     icon: LayoutDashboard,
   },
   {
@@ -20,15 +26,21 @@ const adminLinks = [
     icon: File,
   },
 ];
+
 export default function AdminDashBar() {
   const pathname = usePathname();
+
   return (
     <nav>
       <ul className="flex items-center justify-center gap-8 text-muted-foreground bg-secondary w-fit mx-auto p-3 rounded-full border">
         {adminLinks.map((link) => {
           const isActive =
-            pathname.startsWith(link.link) &&
-            (link.link !== "/admin/" || pathname === "/admin/");
+            (link.link === "/" && pathname === "/") ||
+            (link.link === "/admin" && pathname === "/admin") ||
+            (link.link !== "/" &&
+              link.link !== "/admin" &&
+              pathname.startsWith(link.link));
+
           return (
             <li key={link.name} title={link.name}>
               <Link

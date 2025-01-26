@@ -28,8 +28,10 @@ export default async function page() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <h2 className=" mb-2 border-b py-2">Blog Posts per Category:</h2>
-          <div className="grid grid-cols-2 capitalize">
+          <h2 className=" mb-2 border-b py-2 text-lg">
+            Blog Posts per Category:
+          </h2>
+          <div className="grid grid-cols-2 gap-2 capitalize">
             {stats.blogPostsPerCategory.map((category) => (
               <p key={category.categoryName}>
                 {category.categoryName}: {category.blogPostCount}
@@ -39,8 +41,8 @@ export default async function page() {
         </div>
 
         <div>
-          <h2 className="mb-2 border-b py-2">Projects per Category:</h2>
-          <div className="grid grid-cols-2 capitalize">
+          <h2 className="mb-2 border-b text-lg py-2">Projects per Category:</h2>
+          <div className="grid grid-cols-2 gap-2 capitalize">
             {stats.projectsPerCategory.map((category) => (
               <p key={category.categoryName}>
                 {category.categoryName}: {category.projectCount}

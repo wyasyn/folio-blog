@@ -2,7 +2,14 @@ import Image from "next/image";
 import heroImg from "@/assets/hero.jpg";
 import Link from "next/link";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
-import { Github, Linkedin, LucideProps, Mail, Twitter } from "lucide-react";
+import {
+  Github,
+  Linkedin,
+  Lock,
+  LucideProps,
+  Mail,
+  Twitter,
+} from "lucide-react";
 const email = process.env.EMAIL;
 
 export default function AsideBar() {
@@ -51,6 +58,9 @@ export default function AsideBar() {
             {socials.map((item) => (
               <SocialIcon key={item.name} link={item.link} Icon={item.icon} />
             ))}
+            <Link href={`/admin`} className="hover:text-foreground">
+              <Lock className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </div>

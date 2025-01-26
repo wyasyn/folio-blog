@@ -1,4 +1,5 @@
 "use client";
+import AdminBackBtn from "@/components/AdminBackBtn";
 import AdminTitle from "@/components/AdminTitle";
 import Form, { FormData } from "@/components/Form";
 import { createProject } from "@/lib/actions/project";
@@ -28,6 +29,7 @@ const CreateProject: React.FC = () => {
     <>
       <AdminTitle title="Add Project" />
       <Form onSubmit={createProjectFunc} buttonText="Create Project" />
+      <AdminBackBtn />
     </>
   );
 };

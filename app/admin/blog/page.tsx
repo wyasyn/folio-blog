@@ -1,4 +1,5 @@
 import DeleteBlogBtn from "@/components/DeleteBlogBtn";
+import FloatingBtn from "@/components/FloatingBtn";
 import { PaginationMenu } from "@/components/Pagination";
 import { getPaginatedBlogPosts } from "@/lib/actions/posts";
 import Link from "next/link";
@@ -33,7 +34,11 @@ export default async function Page(props: { searchParams: SearchParams }) {
       <div className="my-[3rem] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {data.blogPosts.map((blog) => (
           <div key={blog.id} className="p-4 max-w-[300px] border rounded-xl">
-            <h2 className="text-2xl font-medium mb-2">{blog.title}</h2>
+            <h2 className="text-2xl font-medium mb-2">
+              {blog.title.length > 38
+                ? `${blog.title.slice(0, 38)}...`
+                : blog.title}
+            </h2>
             <p className="text-sm">{blog.excerpt.slice(0, 60)}...</p>
             <div className="flex items-center justify-between gap-4 py-2">
               <Link
@@ -47,6 +52,8 @@ export default async function Page(props: { searchParams: SearchParams }) {
           </div>
         ))}
       </div>
+
+      <FloatingBtn link="/admin/blog/create-blog" />
 
       <div className="">
         {data.pagination.totalPages > 1 && (
