@@ -88,3 +88,9 @@
 .status-message {
   @apply text-sm text-muted-foreground p-3 rounded-lg mt-3 border bg-secondary;
 }
+
+.custom-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}

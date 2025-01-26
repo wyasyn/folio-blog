@@ -11,7 +11,7 @@ export default function ProjectsFilter() {
   const query = searchParams.get("query");
 
   return (
-    <div className="mt-8 flex items-center justify-center">
+    <div className="my-8 flex items-center justify-center">
       <div className="flex items-center gap-3 justify-center">
         {projectFilters.map((filter, index) => {
           const isActive = query === filter || (filter === "all" && !query);

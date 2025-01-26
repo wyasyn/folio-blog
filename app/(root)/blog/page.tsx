@@ -1,3 +1,5 @@
+import BlogFetch from "@/components/Blogfetch";
+
 export default function page() {
   return (
     <div id="blog">
@@ -8,7 +10,9 @@ export default function page() {
         technology, design, and innovation.
       </p>
 
-      <div className="my-[3rem]">blog content</div>
+      <div className="my-[3rem]">
+        <BlogFetch />
+      </div>
     </div>
   );
 }
