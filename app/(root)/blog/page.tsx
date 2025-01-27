@@ -1,6 +1,17 @@
 import BlogFetch from "@/components/Blogfetch";
+import LoadingUI from "@/components/LoadingUI";
+import { Suspense } from "react";
 
-export default function page() {
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
+export default async function page(props: { searchParams: SearchParams }) {
+  const searchParams = await props.searchParams;
+
+  const page = Array.isArray(searchParams.query)
+    ? searchParams.query[0]
+    : searchParams.query;
+  const currentPage = parseInt(page ?? "1") || 1;
+  const pageSize = 4;
   return (
     <div id="blog">
       <small className="uppercase text-primary">Blog</small>
@@ -11,7 +22,9 @@ export default function page() {
       </p>
 
       <div className="my-[3rem]">
-        <BlogFetch />
+        <Suspense fallback={<LoadingUI />}>
+          <BlogFetch currentPage={currentPage} pageSize={pageSize} />
+        </Suspense>
       </div>
     </div>
   );

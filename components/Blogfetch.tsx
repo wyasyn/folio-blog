@@ -1,30 +1,48 @@
+import { getPaginatedBlogPosts } from "@/lib/actions/posts";
 import { BlogCard } from "./Blogcard";
+import { PaginationMenu } from "./Pagination";
 
-export default function BlogFetch() {
+export default async function BlogFetch({
+  currentPage,
+  pageSize,
+}: {
+  currentPage: number;
+  pageSize: number;
+}) {
+  const { blogPosts, pagination } = await getPaginatedBlogPosts(
+    currentPage,
+    pageSize
+  );
+
+  if (!blogPosts) {
+    return <div>Error: No blog posts found.</div>;
+  }
   return (
-    <div className="custom-grid">
-      {sampleData.map((data) => (
-        <BlogCard key={data.image} {...data} />
-      ))}
+    <div>
+      <div className="custom-grid">
+        {blogPosts.length > 0 ? (
+          blogPosts.map((blog) => (
+            <BlogCard
+              key={blog.id}
+              title={blog.title}
+              description={blog.excerpt}
+              image={blog.image}
+              body={blog.body}
+              link={`/blog/${blog.slug}`}
+            />
+          ))
+        ) : (
+          <div>No blog posts found.</div>
+        )}
+      </div>
+      {pagination.totalPages > 1 && (
+        <div className="flex justify-center mt-8">
+          <PaginationMenu
+            currentPage={pagination.currentPage}
+            totalPages={pagination.totalPages}
+          />
+        </div>
+      )}
     </div>
   );
 }
-
-const sampleData = [
-  {
-    title: "How to create a beautiful and engaging website",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in ligula vel ipsum tincidunt luctus. Nulla facilisi. Sed ac massa vel odio efficitur tincidunt.",
-    link: "/blog/how-to-create-a-beautiful-and-engaging-website",
-    image:
-      "https://images.unsplash.com/photo-1481487196290-c152efe083f5?q=80&w=1862&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    title: "How to build a successful startup",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in ligula vel ipsum tincidunt luctus. Nulla facilisi. Sed ac massa vel odio efficitur tincidunt.",
-    link: "/blog/how-to-build-a-successful-startup",
-    image:
-      "https://images.unsplash.com/photo-1519222970733-f546218fa6d7?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-];

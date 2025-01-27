@@ -1,3 +1,4 @@
+"use client";
 import Form, { FormData } from "@/components/Form";
 import { editBlogPost } from "@/lib/actions/posts";
 import { useRouter } from "next/navigation";
@@ -25,7 +26,7 @@ function EditBlogPost({
 
       if (message) {
         toast.success(message);
-        router.refresh();
+        router.push("/admin/blog");
       } else if (error) {
         toast.error(error);
       }

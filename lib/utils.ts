@@ -14,3 +14,10 @@ export const makeSlug = (str: string) => {
 export function joinWithCommas(strings: string[]): string {
   return strings.join(", ");
 }
+
+export function calculateReadingTime(content: string): number {
+  const words = content.trim().split(/\s+/).length; // Split content into words
+  const wordsPerMinute = 200; // Average reading speed
+  const readingTime = Math.ceil(words / wordsPerMinute); // Round up to the nearest minute
+  return readingTime;
+}

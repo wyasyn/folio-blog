@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { BentoGridSecondDemo } from "./BentoGridSection";
+import { Suspense } from "react";
+import LoadingUI from "./LoadingUI";
 
-export default function SelectedWorks() {
+export default function SelectedWorks({
+  currentPage,
+}: {
+  currentPage: number;
+}) {
   return (
     <div className="mt-[5rem] mb-[3rem]">
       <div className="flex items-center mb-[2rem] justify-between ">
@@ -13,8 +19,9 @@ export default function SelectedWorks() {
           See More
         </Link>
       </div>
-
-      <BentoGridSecondDemo />
+      <Suspense fallback={<LoadingUI />}>
+        <BentoGridSecondDemo currentPage={currentPage} />
+      </Suspense>
     </div>
   );
 }

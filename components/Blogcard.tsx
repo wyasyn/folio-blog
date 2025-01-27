@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "@/lib/utils";
+import { calculateReadingTime, cn } from "@/lib/utils";
 import Image from "next/image";
 import heroImg from "@/assets/hero.jpg";
 import Link from "next/link";
@@ -9,12 +9,15 @@ export function BlogCard({
   description,
   link,
   image,
+  body,
 }: {
   title: string;
   description: string;
   link: string;
   image: string;
+  body: string;
 }) {
+  const readingTime = calculateReadingTime(body);
   return (
     <Link href={link} className=" w-full group/card">
       <div
@@ -39,7 +42,7 @@ export function BlogCard({
             <p className="font-normal text-base text-gray-50 relative z-10">
               Yasin Walum
             </p>
-            <p className="text-sm text-gray-400">2 min read</p>
+            <p className="text-sm text-gray-400">{`${readingTime} min read`}</p>
           </div>
         </div>
         <div className="text content">

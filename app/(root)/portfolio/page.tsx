@@ -12,7 +12,11 @@ export async function generateMetadata(props: { searchParams: SearchParams }) {
 
 export default async function Page(props: { searchParams: SearchParams }) {
   const searchParams = await props.searchParams;
-  const query = searchParams.query;
+
+  const page = Array.isArray(searchParams.query)
+    ? searchParams.query[0]
+    : searchParams.query;
+  const currentPage = parseInt(page ?? "1") || 1;
 
   return (
     <div id="portfolio">
@@ -25,8 +29,7 @@ export default async function Page(props: { searchParams: SearchParams }) {
         engaging digital experiences that drive results.
       </p>
 
-      <FeaturedProjects />
-      {query && <p>Query: {query}</p>}
+      <FeaturedProjects currentPage={currentPage} />
     </div>
   );
 }

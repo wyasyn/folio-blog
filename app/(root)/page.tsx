@@ -3,7 +3,15 @@ import SecondaryBtn from "@/components/SecondaryBtn";
 import SelectedWorks from "@/components/SelectedWorks";
 import Skills from "@/components/Skills";
 
-export default function page() {
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
+export default async function page(props: { searchParams: SearchParams }) {
+  const searchParams = await props.searchParams;
+
+  const page = Array.isArray(searchParams.query)
+    ? searchParams.query[0]
+    : searchParams.query;
+  const currentPage = parseInt(page ?? "1") || 1;
   return (
     <div>
       <div className="text-center md:text-start flex flex-col items-center md:items-start">
@@ -19,7 +27,9 @@ export default function page() {
           <PrimaryBtn text="Let's connect" link="/contact" />
         </div>
       </div>
-      <SelectedWorks />
+
+      <SelectedWorks currentPage={currentPage} />
+
       <Skills />
     </div>
   );
