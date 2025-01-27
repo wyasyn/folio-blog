@@ -209,3 +209,44 @@ export const getBlogPostById = async (id: number) => {
     throw new Error("An error occurred while fetching blog post");
   }
 };
+
+export const getBlogPostBySlug = async (slug: string) => {
+  try {
+    const blogPost = await prisma.blogPost.findUnique({
+      where: { slug },
+      include: { categories: true },
+    });
+    if (!blogPost) {
+      return { error: "Blog post not found", blogPost: null };
+    }
+    return {
+      error: null,
+      blogPost,
+    };
+  } catch (error) {
+    console.error("Error fetching blog post by slug:", error);
+    throw new Error("An error occurred while fetching blog post");
+  }
+};
+
+export const getRelatedPosts = async (id: number, categoryIds: number[]) => {
+  try {
+    const relatedPosts = await prisma.blogPost.findMany({
+      where: {
+        NOT: { id },
+        categories: {
+          some: {
+            id: {
+              in: categoryIds,
+            },
+          },
+        },
+      },
+      take: 3,
+    });
+    return relatedPosts;
+  } catch (error) {
+    console.error("Error fetching related posts:", error);
+    throw new Error("An error occurred while fetching related posts");
+  }
+};

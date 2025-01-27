@@ -24,7 +24,7 @@ function EditProjectComponent({
       const { message, error } = await editProject({ ...data, id });
       if (message) {
         toast.success(message);
-        router.refresh();
+        router.push("/admin/project");
       } else if (error) {
         toast.error(error);
       }

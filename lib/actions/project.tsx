@@ -115,13 +115,15 @@ export async function getPaginatedProjects(page = 1, pageSize = 4) {
 export const editProject = async ({
   id,
   title,
-  description,
+  excerpt,
+  body,
   image,
   categories, // Comma-separated string of categories
 }: {
   id: number; // Assume projects are identified by a unique ID
   title?: string;
-  description?: string;
+  excerpt?: string;
+  body?: string;
   image?: string;
   categories?: string;
 }) => {
@@ -135,7 +137,8 @@ export const editProject = async ({
     // Define the type for updated data
     type ProjectUpdateInput = {
       title?: string;
-      description?: string;
+      excerpt?: string;
+      body?: string;
       image?: string;
       categories?: {
         set: { id: number }[];
@@ -146,8 +149,9 @@ export const editProject = async ({
 
     // Populate updatedData with the provided fields
     if (title) updatedData.title = title;
-    if (description) updatedData.description = description;
+    if (excerpt) updatedData.excerpt = excerpt;
     if (image) updatedData.image = image;
+    if (body) updatedData.body = body;
 
     // Handle categories
     if (categories) {
@@ -195,5 +199,99 @@ export const getProjectById = async (id: number) => {
   } catch (error) {
     console.error("Error fetching project by ID:", error);
     throw new Error("An error occurred while fetching project");
+  }
+};
+
+export const getProjectBySlug = async (slug: string) => {
+  try {
+    const project = await prisma.project.findUnique({
+      where: { slug },
+      include: { categories: true },
+    });
+    if (!project) {
+      return { error: "Project not found", project: null };
+    }
+    return {
+      error: null,
+      project,
+    };
+  } catch (error) {
+    console.error("Error fetching project by slug:", error);
+    throw new Error("An error occurred while fetching project");
+  }
+};
+
+export const getRelatedProjects = async (id: number, categoryIds: number[]) => {
+  try {
+    const relatedProjects = await prisma.project.findMany({
+      where: {
+        id: { not: id },
+        categories: {
+          some: {
+            id: { in: categoryIds },
+          },
+        },
+      },
+      take: 3, // Limit to 3 related projects
+    });
+    return relatedProjects;
+  } catch (error) {
+    console.error("Error fetching related projects:", error);
+    throw new Error("An error occurred while fetching related projects");
+  }
+};
+
+export const getProjectsByCategory = async (
+  categorySlug: string,
+  page = 1,
+  pageSize = 4
+) => {
+  // Ensure valid pagination inputs
+  const currentPage = Math.max(page, 1); // Minimum value is 1
+  const validPageSize = Math.max(pageSize, 1); // Minimum value is 1
+  const skip = (currentPage - 1) * validPageSize;
+
+  try {
+    // Fetch paginated projects and total count in parallel
+    const [projects, total] = await prisma.$transaction([
+      prisma.project.findMany({
+        skip,
+        take: validPageSize,
+        orderBy: { createdAt: "desc" },
+        include: { categories: true },
+        where: {
+          categories: {
+            some: {
+              slug: categorySlug,
+            },
+          },
+        },
+      }),
+      prisma.project.count({
+        where: {
+          categories: {
+            some: {
+              slug: categorySlug,
+            },
+          },
+        },
+      }),
+    ]);
+
+    // Calculate total pages only if there are projects
+    const totalPages = total > 0 ? Math.ceil(total / validPageSize) : 0;
+
+    return {
+      projects,
+      pagination: {
+        currentPage,
+        totalPages,
+        pageSize: validPageSize,
+        total,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching projects by category:", error);
+    throw new Error("An error occurred while fetching projects by category");
   }
 };

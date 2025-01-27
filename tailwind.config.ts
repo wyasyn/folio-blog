@@ -4,6 +4,7 @@ import tailwindcssAnimate from "tailwindcss-animate";
 import tailwindcssTypography from "@tailwindcss/typography";
 
 export default {
+  darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -11,6 +12,20 @@ export default {
   ],
   theme: {
     extend: {
+      typography: (theme: { colors: { [key: string]: string } }) => ({
+        DEFAULT: {
+          css: {
+            a: {
+              color: theme.colors.orange[500],
+              transition: "color 0.3s ease",
+              textDecoration: "none",
+              "&:hover": {
+                color: theme.colors.orange[600],
+              },
+            },
+          },
+        },
+      }),
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
         serif: ["var(--font-serif)", ...fontFamily.serif],
