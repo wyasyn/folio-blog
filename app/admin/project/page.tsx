@@ -9,9 +9,9 @@ type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 export default async function Page(props: { searchParams: SearchParams }) {
   const searchParams = await props.searchParams;
 
-  const page = Array.isArray(searchParams.query)
-    ? searchParams.query[0]
-    : searchParams.query;
+  const page = Array.isArray(searchParams.page)
+    ? searchParams.page[0]
+    : searchParams.page;
   const currentPage = parseInt(page ?? "1") || 1;
   const pageSize = 6; // Adjust as needed
 
@@ -31,7 +31,7 @@ export default async function Page(props: { searchParams: SearchParams }) {
         Paginated Projects ({data.pagination.currentPage} of{" "}
         {data.pagination.totalPages})
       </h1>
-      <div className="my-[3rem] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="my-[3rem] grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {data.projects.map((project) => (
           <div key={project.id} className="p-4 max-w-[300px] border rounded-xl">
             <h2 className="text-2xl font-medium mb-2">
@@ -58,8 +58,9 @@ export default async function Page(props: { searchParams: SearchParams }) {
       <div className="">
         {data.pagination.totalPages > 1 && (
           <PaginationMenu
-            currentPage={data.pagination.currentPage}
+            currentPage={currentPage}
             totalPages={data.pagination.totalPages}
+            basePath="/admin/project"
           />
         )}
       </div>

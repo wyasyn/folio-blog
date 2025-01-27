@@ -6,8 +6,10 @@ import { PaginationMenu } from "./Pagination";
 
 export async function BentoGridSecondDemo({
   currentPage,
+  basePath,
 }: {
   currentPage: number;
+  basePath?: string;
 }) {
   const { projects, pagination } = await getPaginatedProjects(currentPage);
   if (!projects || projects.length === 0) {
@@ -30,8 +32,9 @@ export async function BentoGridSecondDemo({
       </BentoGrid>
       {pagination.totalPages > 1 && (
         <PaginationMenu
-          currentPage={pagination.currentPage}
+          currentPage={currentPage}
           totalPages={pagination.totalPages}
+          basePath={basePath}
         />
       )}
     </div>

@@ -12,7 +12,7 @@ export default function FeaturedProjects({
     <div>
       <ProjectsFilter />
       <Suspense fallback={<LoadingUI />}>
-        <BentoGridSecondDemo currentPage={currentPage} />
+        <BentoGridSecondDemo basePath="/portfolio" currentPage={currentPage} />
       </Suspense>
     </div>
   );

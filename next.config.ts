@@ -11,6 +11,10 @@ const nextConfig = {
         protocol: "https" as const,
         hostname: "cdn.dribbble.com",
       },
+      {
+        protocol: "https" as const,
+        hostname: "images.unsplash.com",
+      },
     ],
   },
   experimental: {

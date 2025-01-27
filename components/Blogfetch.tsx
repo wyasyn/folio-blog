@@ -38,8 +38,9 @@ export default async function BlogFetch({
       {pagination.totalPages > 1 && (
         <div className="flex justify-center mt-8">
           <PaginationMenu
-            currentPage={pagination.currentPage}
+            currentPage={currentPage}
             totalPages={pagination.totalPages}
+            basePath="/blog"
           />
         </div>
       )}

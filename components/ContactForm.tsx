@@ -3,11 +3,15 @@ import { sendEmail } from "@/lib/resend";
 import React, { useState } from "react";
 import { z } from "zod";
 
+import { AlertCircle, Terminal } from "lucide-react";
+
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "./ui/button";
 // Zod schema for form validation
 const formSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters").max(50),
   email: z.string().email("Invalid email address").max(50),
-  subject: z.string().min(5, "Subject must be at least 5 characters").max(50),
+  subject: z.string().min(3, "Subject must be at least 3 characters").max(50),
   message: z.string().min(7, "Message must be at least 7 characters").max(500),
 });
 
@@ -20,7 +24,9 @@ export default function ContactForm() {
     subject: "",
     message: "",
   });
-  const [status, setStatus] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -39,20 +45,23 @@ export default function ContactForm() {
       const errorMessage = validation.error.errors
         .map((err) => err.message)
         .join(", ");
-      setStatus(errorMessage);
+      setError(errorMessage);
       return;
     }
 
     try {
+      setIsSubmitting(true);
       const response = await sendEmail(formData);
       if (response.error) {
-        setStatus(response.error);
+        setError(response.error);
       } else {
-        setStatus(response.message || "Email sent successfully.");
+        setSuccess(response.message || "Email sent successfully.");
         setFormData({ name: "", email: "", subject: "", message: "" });
       }
     } catch {
-      setStatus("An unexpected error occurred. Please try again later.");
+      setError("An unexpected error occurred. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -97,10 +106,22 @@ export default function ContactForm() {
         onChange={handleChange}
         required
       />
-      <button type="submit" className="submit-btn">
-        Submit
-      </button>
-      {status && <p className="status-message">{status}</p>}
+      <Button type="submit" className="text-black" disabled={isSubmitting}>
+        {isSubmitting ? "Sending..." : "Send Message"}
+      </Button>
+      {error ? (
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      ) : success ? (
+        <Alert>
+          <Terminal className="h-4 w-4" />
+          <AlertTitle>Success</AlertTitle>
+          <AlertDescription>{success}</AlertDescription>
+        </Alert>
+      ) : null}
     </form>
   );
 }

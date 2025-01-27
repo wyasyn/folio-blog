@@ -13,9 +13,9 @@ export async function generateMetadata(props: { searchParams: SearchParams }) {
 export default async function Page(props: { searchParams: SearchParams }) {
   const searchParams = await props.searchParams;
 
-  const page = Array.isArray(searchParams.query)
-    ? searchParams.query[0]
-    : searchParams.query;
+  const page = Array.isArray(searchParams.page)
+    ? searchParams.page[0]
+    : searchParams.page;
   const currentPage = parseInt(page ?? "1") || 1;
 
   return (

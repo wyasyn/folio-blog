@@ -64,6 +64,13 @@ const Form: React.FC<FormProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(formData);
+    setFormData({
+      title: "",
+      excerpt: "",
+      image: "",
+      body: "",
+      categories: "",
+    });
   };
 
   return (

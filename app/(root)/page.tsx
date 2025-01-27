@@ -8,9 +8,9 @@ type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 export default async function page(props: { searchParams: SearchParams }) {
   const searchParams = await props.searchParams;
 
-  const page = Array.isArray(searchParams.query)
-    ? searchParams.query[0]
-    : searchParams.query;
+  const page = Array.isArray(searchParams.page)
+    ? searchParams.page[0]
+    : searchParams.page;
   const currentPage = parseInt(page ?? "1") || 1;
   return (
     <div>
