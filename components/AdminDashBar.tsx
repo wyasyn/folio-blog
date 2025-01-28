@@ -3,6 +3,7 @@
 import { Briefcase, File, Home, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import LogoutBtn from "./logoutBtn";
 
 const adminLinks = [
   {
@@ -52,6 +53,7 @@ export default function AdminDashBar() {
             </li>
           );
         })}
+        <LogoutBtn />
       </ul>
     </nav>
   );

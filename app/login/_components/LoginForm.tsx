@@ -1,22 +1,36 @@
 "use client";
 
-import type { User } from "@/types/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { loginUser, logoutUser } from "../_actions/auth";
+import { getCurrentUser, loginUser } from "../_actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useRouter } from "next/navigation";
+import { MouseIcon } from "lucide-react";
+import Link from "next/link";
 
 export default function LoginForm() {
+  const router = useRouter();
+  useEffect(() => {
+    async function fetchData() {
+      const user = await getCurrentUser();
+
+      if (user) {
+        setShow(false);
+        router.push("/admin");
+      }
+    }
+    fetchData();
+  }, [router]);
   const [email, setEmail] = useState("");
   const [pin, setPin] = useState("");
-  const [user, setUser] = useState<User | null>(null);
+  const [show, setShow] = useState(true);
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -29,7 +43,7 @@ export default function LoginForm() {
       const result = await loginUser(email, pin);
       setMessage(result.message);
       if (result.success && result.user) {
-        setUser(result.user);
+        router.push("/admin");
       } else {
         setError("Login failed. Please check your credentials.");
       }
@@ -40,27 +54,17 @@ export default function LoginForm() {
     }
   };
 
-  const handleLogout = async () => {
-    setIsLoading(true);
-    try {
-      const result = await logoutUser();
-      setMessage(result.message);
-      if (result.success) {
-        setUser(null);
-      }
-    } catch {
-      setError("Logout failed. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     <div className="w-full max-w-md mx-auto space-y-4">
-      {!user ? (
+      <Link
+        href="/"
+        className="mb-14 block  hover:text-primary transition-all duration-300 group"
+      >
+        <MouseIcon className="w-16 h-16 mx-auto group-hover:animate-bounce" />
+      </Link>
+      {show ? (
         <form onSubmit={handleLogin} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
@@ -70,37 +74,32 @@ export default function LoginForm() {
               required
             />
           </div>
-          <div className="space-y-2">
+          <div className="space-y-2 mx-auto flex flex-col items-center">
             <Label htmlFor="pin">6-Digit PIN</Label>
             <InputOTP
               maxLength={6}
               value={pin}
-              onChange={setPin}
-              render={({ slots }) => (
-                <InputOTPGroup>
-                  {slots.map((slot, index) => (
-                    <InputOTPSlot key={index} index={index} {...slot} />
-                  ))}
-                </InputOTPGroup>
-              )}
-            />
+              onChange={(value) => setPin(value)}
+            >
+              <InputOTPGroup>
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+                <InputOTPSlot index={3} />
+                <InputOTPSlot index={4} />
+                <InputOTPSlot index={5} />
+              </InputOTPGroup>
+            </InputOTP>
           </div>
           <Button
             type="submit"
-            className="w-full"
-            disabled={isLoading || pin.length !== 6}
+            className="w-full text-black"
+            disabled={isLoading || pin.length !== 6 || !email}
           >
             {isLoading ? "Logging in..." : "Login"}
           </Button>
         </form>
-      ) : (
-        <div className="text-center">
-          <p className="mb-4">Welcome, {user.name}!</p>
-          <Button onClick={handleLogout} disabled={isLoading}>
-            {isLoading ? "Logging out..." : "Logout"}
-          </Button>
-        </div>
-      )}
+      ) : null}
       {message && (
         <Alert>
           <AlertDescription>{message}</AlertDescription>

@@ -1,8 +1,18 @@
 import AdminDashBar from "@/components/AdminDashBar";
 import { AdminFooter } from "@/components/AminFooter";
 import React from "react";
+import { getCurrentUser } from "../login/_actions/auth";
+import { redirect } from "next/navigation";
 
-export default function layout({ children }: { children: React.ReactNode }) {
+export default async function layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const user = await getCurrentUser();
+  if (!user) {
+    redirect("/login");
+  }
   return (
     <div className="p-8 flex flex-col gap-8 min-h-screen">
       <AdminDashBar />
