@@ -250,3 +250,54 @@ export const getRelatedPosts = async (id: number, categoryIds: number[]) => {
     throw new Error("An error occurred while fetching related posts");
   }
 };
+
+export const getBlogPostsByCategory = async (
+  categorySlug: string,
+  page = 1,
+  pageSize = 4
+) => {
+  try {
+    const currentPage = Math.max(page, 1);
+    const validPageSize = Math.max(pageSize, 1);
+    const skip = (currentPage - 1) * validPageSize;
+
+    const category = await prisma.category.findUnique({
+      where: { slug: categorySlug },
+      include: { blogPosts: true },
+    });
+
+    if (!category) {
+      return { error: "Category not found", blogPosts: [] };
+    }
+
+    const total = category.blogPosts.length;
+    const totalPages = total > 0 ? Math.ceil(total / validPageSize) : 0;
+
+    const blogPosts = await prisma.blogPost.findMany({
+      where: {
+        categories: {
+          some: {
+            slug: categorySlug,
+          },
+        },
+      },
+      skip,
+      take: validPageSize,
+      orderBy: { createdAt: "desc" },
+      include: { categories: true },
+    });
+
+    return {
+      blogPosts,
+      pagination: {
+        currentPage,
+        totalPages,
+        pageSize: validPageSize,
+        total,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching blog posts by category:", error);
+    throw new Error("An error occurred while fetching blog posts");
+  }
+};
