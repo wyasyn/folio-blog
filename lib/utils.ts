@@ -21,3 +21,22 @@ export function calculateReadingTime(content: string): number {
   const readingTime = Math.ceil(words / wordsPerMinute); // Round up to the nearest minute
   return readingTime;
 }
+
+export function formatDateString(dateStr: string): string {
+  const date = new Date(dateStr);
+
+  if (isNaN(date.getTime())) {
+    throw new Error("Invalid date string");
+  }
+
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  };
+
+  return date.toLocaleString("en-US", options).replace(",", " |");
+}
