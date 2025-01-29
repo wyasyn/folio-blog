@@ -3,6 +3,7 @@ import BackBtn from "@/components/BackBtn";
 import Categories from "@/components/CategoriesBadges";
 import { getBlogPostBySlug } from "@/lib/actions/posts";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import { Article, WithContext } from "schema-dts";
 
 type Params = Promise<{ slug: string }>;
 
@@ -31,6 +32,30 @@ export default async function Page(props: { params: Params }) {
 
   const categories = blogPost?.categories;
 
+  const jsonLd: WithContext<Article> = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: blogPost?.title,
+    image: blogPost?.image ? [blogPost.image] : [],
+    datePublished: blogPost?.createdAt
+      ? new Date(blogPost.createdAt).toISOString()
+      : "",
+    dateModified: blogPost?.updatedAt
+      ? new Date(blogPost.updatedAt).toISOString()
+      : "",
+    author: [
+      {
+        "@type": "Person",
+        name: "Yasin Walum",
+        url: "https://ywalum.com",
+        sameAs: [
+          "https://github.com/wyasyn",
+          "https://www.linkedin.com/in/yasin-walum",
+        ],
+      },
+    ],
+  };
+
   return (
     <div>
       <div className="flex w-full items-center justify-end">
@@ -51,6 +76,10 @@ export default async function Page(props: { params: Params }) {
           <p>No content available.</p>
         )}
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
     </div>
   );
 }

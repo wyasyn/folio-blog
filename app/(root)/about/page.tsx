@@ -4,7 +4,30 @@ import laptopImage from "@/assets/original-635266f60586f8b46bcc4305c43727ce.png"
 import Stats from "./_components/Stats";
 import Faqs from "./_components/Faqs";
 
+import { Person, WithContext } from "schema-dts";
+
 export default function page() {
+  const jsonLd: WithContext<Person> = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Yasin Walum",
+    description:
+      "I am a passionate software engineer who loves building innovative solutions. I have a strong background in programming languages and frameworks.",
+    image: [
+      "https://res.cloudinary.com/dkdteb9m5/image/upload/v1731179025/personal%20finance/lj5hjqhmvaeqdsrfcwky.jpg",
+    ],
+    url: "https://ywalum.com",
+    sameAs: [
+      "https://github.com/wyasyn",
+      "https://www.linkedin.com/in/yasin-walum",
+    ],
+    jobTitle: "Software Engineer",
+    homeLocation: "Kampala, Uganda",
+
+    nationality: "Ugandan",
+
+    gender: "Male",
+  };
   return (
     <div id="about">
       <small className="uppercase text-primary">About me</small>
@@ -30,6 +53,10 @@ export default function page() {
         <Stats />
         <Faqs />
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
     </div>
   );
 }
