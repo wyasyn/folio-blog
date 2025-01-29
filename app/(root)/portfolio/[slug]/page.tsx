@@ -6,6 +6,7 @@ import BackBtn from "@/components/BackBtn";
 import Categories from "@/components/CategoriesBadges";
 import { getProjectBySlug } from "@/lib/actions/project";
 import { Article, WithContext } from "schema-dts";
+import CodeBlock from "@/components/CodeBlock";
 
 type Params = {
   params: Promise<{ slug: string }>;
@@ -73,6 +74,15 @@ export default async function ProjectPage({ params }: Params) {
               Categories: (props) => (
                 <Categories {...props} categories={categories} />
               ),
+              code: ({ className, children }) => {
+                const match = /language-(\w+)/.exec(className || "");
+                return (
+                  <CodeBlock
+                    code={String(children).trim()}
+                    language={match?.[1] || "plaintext"}
+                  />
+                );
+              },
             }}
             source={project.body}
           />

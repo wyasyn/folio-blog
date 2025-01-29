@@ -12,15 +12,29 @@ export default {
   ],
   theme: {
     extend: {
-      typography: (theme: { colors: { [key: string]: string } }) => ({
+      typography: (theme: (path: string) => unknown) => ({
         DEFAULT: {
           css: {
+            // Remove default code block styling
+            "code::before": { content: "none" },
+            "code::after": { content: "none" },
+            code: {
+              backgroundColor: "transparent",
+              color: "inherit",
+              padding: "0",
+              fontWeight: "inherit",
+            },
+            pre: {
+              backgroundColor: "transparent",
+              color: "inherit",
+              padding: "0",
+            },
             a: {
-              color: theme.colors.orange[500],
+              color: theme("colors.orange.500") as string,
               transition: "color 0.3s ease",
               textDecoration: "none",
               "&:hover": {
-                color: theme.colors.orange[600],
+                color: theme("colors.orange.600") as string,
               },
             },
           },

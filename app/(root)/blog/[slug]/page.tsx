@@ -4,6 +4,7 @@ import Categories from "@/components/CategoriesBadges";
 import { getBlogPostBySlug } from "@/lib/actions/posts";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { Article, WithContext } from "schema-dts";
+import CodeBlock from "@/components/CodeBlock";
 
 type Params = Promise<{ slug: string }>;
 
@@ -69,6 +70,15 @@ export default async function Page(props: { params: Params }) {
               Categories: (props) => (
                 <Categories {...props} categories={categories} />
               ),
+              code: ({ className, children }) => {
+                const match = /language-(\w+)/.exec(className || "");
+                return (
+                  <CodeBlock
+                    code={String(children).trim()}
+                    language={match?.[1] || "plaintext"}
+                  />
+                );
+              },
             }}
             source={blogPost.body}
           />
