@@ -1,8 +1,13 @@
 import BlogFetch from "@/components/Blogfetch";
 import LoadingUI from "@/components/LoadingUI";
+import { Metadata } from "next";
 import { Suspense } from "react";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
+export const metadata: Metadata = {
+  title: "Blog post ",
+};
 
 export default async function page(props: { searchParams: SearchParams }) {
   const searchParams = await props.searchParams;

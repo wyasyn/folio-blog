@@ -5,6 +5,11 @@ import Stats from "./_components/Stats";
 import Faqs from "./_components/Faqs";
 
 import { Person, WithContext } from "schema-dts";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Me ",
+};
 
 export default function page() {
   const jsonLd: WithContext<Person> = {

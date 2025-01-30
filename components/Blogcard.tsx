@@ -37,7 +37,7 @@ export function BlogCard({
             alt={title}
             width={600}
             height={400}
-            className=" object-cover w-full h-full group-hover:scale-110 duration-300 group-hover:rotate-12"
+            className=" object-cover w-full h-full group-hover:scale-105 duration-300"
           />
         </div>
         <div className="p-4 bg-secondary rounded-b-lg">

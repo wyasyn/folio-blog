@@ -3,6 +3,11 @@ import { AdminFooter } from "@/components/AminFooter";
 import React from "react";
 import { getCurrentUser } from "../login/_actions/auth";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Admin ",
+};
 
 export default async function layout({
   children,

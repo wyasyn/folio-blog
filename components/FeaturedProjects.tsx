@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { BentoGridSecondDemo } from "./BentoGridSection";
-import ProjectsFilter from "./ProjectsFilter";
+
 import LoadingUI from "./LoadingUI";
 
 export default function FeaturedProjects({
@@ -9,8 +9,7 @@ export default function FeaturedProjects({
   currentPage: number;
 }) {
   return (
-    <div>
-      <ProjectsFilter />
+    <div className="mt-8">
       <Suspense fallback={<LoadingUI />}>
         <BentoGridSecondDemo basePath="/portfolio" currentPage={currentPage} />
       </Suspense>

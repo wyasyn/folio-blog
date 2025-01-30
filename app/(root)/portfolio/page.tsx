@@ -1,14 +1,11 @@
 import FeaturedProjects from "@/components/FeaturedProjects";
+import { Metadata } from "next";
+
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-export async function generateMetadata(props: { searchParams: SearchParams }) {
-  const searchParams = await props.searchParams;
-
-  const query = searchParams.query;
-  return {
-    title: query ? `Portfolio | ${query}` : "Portfolio",
-  };
-}
+export const metadata: Metadata = {
+  title: "Portfolio ",
+};
 
 export default async function Page(props: { searchParams: SearchParams }) {
   const searchParams = await props.searchParams;

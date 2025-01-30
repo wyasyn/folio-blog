@@ -7,17 +7,21 @@ import Categories from "@/components/CategoriesBadges";
 import { getProjectBySlug } from "@/lib/actions/project";
 import { Article, WithContext } from "schema-dts";
 import CodeBlock from "@/components/CodeBlock";
+import { unstable_cache } from "next/cache";
 
 type Params = {
   params: Promise<{ slug: string }>;
 };
 
+const getCashedProject = unstable_cache(async (slug) => {
+  const { project } = await getProjectBySlug(slug);
+  if (!project) notFound();
+  return project;
+});
+
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
-  const projectData = await getProjectBySlug(slug);
-  if (!projectData || !projectData.project) notFound();
-
-  const { project } = projectData;
+  const project = await getCashedProject(slug);
 
   return {
     title: project.title,
@@ -32,10 +36,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 export default async function ProjectPage({ params }: Params) {
   const { slug } = await params;
-  const projectData = await getProjectBySlug(slug);
-  if (!projectData || !projectData.project) notFound();
-
-  const { project } = projectData;
+  const project = await getCashedProject(slug);
   const categories = project.categories;
 
   const jsonLd: WithContext<Article> = {

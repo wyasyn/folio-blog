@@ -6,14 +6,23 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { Article, WithContext } from "schema-dts";
 import CodeBlock from "@/components/CodeBlock";
 import DateCard from "@/components/DateCard";
+import { unstable_cache } from "next/cache";
+import { Metadata } from "next";
 
 type Params = Promise<{ slug: string }>;
 
-export async function generateMetadata(props: { params: Params }) {
+const getCachedBlog = unstable_cache(async (slug) => {
+  const { blogPost } = await getBlogPostBySlug(slug);
+  if (!blogPost) NotFound();
+  return blogPost;
+});
+
+export async function generateMetadata(props: {
+  params: Params;
+}): Promise<Metadata> {
   const params = await props.params;
   const slug = params.slug;
-  const { error, blogPost } = await getBlogPostBySlug(slug);
-  if (error || !blogPost) NotFound();
+  const blogPost = await getCachedBlog(slug);
 
   return {
     title: blogPost?.title,
@@ -21,7 +30,7 @@ export async function generateMetadata(props: { params: Params }) {
     openGraph: {
       title: blogPost?.title,
       description: blogPost?.excerpt,
-      images: [{ url: blogPost?.image }],
+      images: blogPost?.image ? [{ url: blogPost.image }] : [],
     },
   };
 }
@@ -29,8 +38,7 @@ export async function generateMetadata(props: { params: Params }) {
 export default async function Page(props: { params: Params }) {
   const params = await props.params;
   const slug = params.slug;
-  const { error, blogPost } = await getBlogPostBySlug(slug);
-  if (error || !blogPost) NotFound();
+  const blogPost = await getCachedBlog(slug);
 
   const categories = blogPost?.categories;
 
@@ -57,9 +65,6 @@ export default async function Page(props: { params: Params }) {
       },
     ],
   };
-  const date = blogPost?.createdAt ? new Date(blogPost.createdAt) : new Date();
-  console.log("Parsed Date:", date.toString()); // Should not be "Invalid Date"
-  console.log("ISO Format:", date.toISOString()); // Should print a valid ISO string
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
