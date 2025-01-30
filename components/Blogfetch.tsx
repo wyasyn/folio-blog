@@ -25,10 +25,10 @@ export default async function BlogFetch({
             <BlogCard
               key={blog.id}
               title={blog.title}
-              description={blog.excerpt}
               image={blog.image}
               body={blog.body}
-              link={`/blog/${blog.slug}`}
+              link={`/single-blog/${blog.slug}`}
+              categories={blog.categories}
             />
           ))
         ) : (
@@ -40,7 +40,7 @@ export default async function BlogFetch({
           <PaginationMenu
             currentPage={currentPage}
             totalPages={pagination.totalPages}
-            basePath="/blog"
+            basePath="/single-blog"
           />
         </div>
       )}

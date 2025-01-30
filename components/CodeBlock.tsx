@@ -3,7 +3,7 @@
 import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { nightOwl } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface CodeBlockProps {
   code: string;
@@ -45,7 +45,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
       </button>
 
       {/* Code Syntax Highlighter */}
-      <SyntaxHighlighter language={language} style={oneDark} showLineNumbers>
+      <SyntaxHighlighter language={language} style={nightOwl} showLineNumbers>
         {code}
       </SyntaxHighlighter>
     </span>

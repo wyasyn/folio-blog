@@ -1,59 +1,64 @@
 "use client";
-import { calculateReadingTime, cn } from "@/lib/utils";
+import { calculateReadingTime } from "@/lib/utils";
+import { Clock } from "lucide-react";
 import Image from "next/image";
-import heroImg from "@/assets/hero.jpg";
+
 import Link from "next/link";
 
 export function BlogCard({
   title,
-  description,
+  categories,
   link,
   image,
   body,
 }: {
   title: string;
-  description: string;
+  categories: {
+    slug: string;
+    name: string;
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+  }[];
   link: string;
   image: string;
   body: string;
 }) {
   const readingTime = calculateReadingTime(body);
   return (
-    <Link href={link} className=" w-full group/card">
-      <div
-        className={cn(
-          " cursor-pointer overflow-hidden relative card h-96 rounded-md shadow-xl  max-w-sm mx-auto backgroundImage flex flex-col justify-between p-4",
-          " bg-cover bg-center bg-no-repeat"
-        )}
-        style={{
-          backgroundImage: `url(${image})`,
-        }}
-      >
-        <div className="absolute w-full h-full top-0 left-0 transition duration-300 bg-black opacity-40 group-hover/card:opacity-60"></div>
-        <div className="flex flex-row items-center space-x-4 z-10">
+    <Link
+      href={link}
+      className=" w-full hover:shadow-lg border rounded-xl duration-300 transition-all group"
+    >
+      <div>
+        <div className="overflow-clip rounded-t-lg w-full aspect-[4/3]">
           <Image
-            height="100"
-            width="100"
-            alt="Avatar"
-            src={heroImg}
-            className="h-10 w-10 rounded-full border-2 object-cover"
+            src={image}
+            alt={title}
+            width={600}
+            height={400}
+            className=" object-cover w-full h-full group-hover:scale-110 duration-300 group-hover:rotate-12"
           />
-          <div className="flex flex-col">
-            <p className="font-normal text-base text-gray-50 relative z-10">
-              Yasin Walum
-            </p>
-            <p className="text-sm text-gray-400">{`${readingTime} min read`}</p>
-          </div>
         </div>
-        <div className="text content">
-          <h1 className="font-bold text-xl truncate md:text-2xl text-gray-50 relative z-10">
-            {title}
-          </h1>
-          <p className="font-normal text-sm text-gray-50 relative z-10 my-4">
-            {description.length > 100
-              ? description.slice(0, 100) + "..."
-              : description}
-          </p>
+        <div className="p-4 bg-secondary rounded-b-lg">
+          <div className="flex items-center gap-1 overflow-hidden mb-2 ">
+            {categories.map((category, index) => (
+              <span
+                key={index}
+                className="px-3 py-1 shrink-0 text-xs rounded-full  border"
+              >
+                <span>{category.name}</span>
+              </span>
+            ))}
+          </div>
+          <h3 className="text-xl mb-5">
+            {title.length > 50 ? title.slice(0, 50) + "..." : title}
+          </h3>
+          <div className="flex justify-end items-center">
+            <span className="flex items-center gap-2">
+              <Clock className="w-5 h-5 text-primary" /> {readingTime} min read
+            </span>
+          </div>
         </div>
       </div>
     </Link>

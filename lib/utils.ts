@@ -23,10 +23,13 @@ export function calculateReadingTime(content: string): number {
 }
 
 export function formatDateString(dateStr: string): string {
+  if (!dateStr) return "Unknown Date"; // Handle empty string
+
   const date = new Date(dateStr);
 
   if (isNaN(date.getTime())) {
-    throw new Error("Invalid date string");
+    console.error("Invalid date string:", dateStr);
+    return "Invalid Date";
   }
 
   const options: Intl.DateTimeFormatOptions = {
@@ -38,5 +41,5 @@ export function formatDateString(dateStr: string): string {
     hour12: true,
   };
 
-  return date.toLocaleString("en-US", options).replace(",", " |");
+  return date.toLocaleString("en-US", options).replace("at", " |");
 }

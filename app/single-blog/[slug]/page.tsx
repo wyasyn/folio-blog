@@ -5,6 +5,7 @@ import { getBlogPostBySlug } from "@/lib/actions/posts";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { Article, WithContext } from "schema-dts";
 import CodeBlock from "@/components/CodeBlock";
+import DateCard from "@/components/DateCard";
 
 type Params = Promise<{ slug: string }>;
 
@@ -56,36 +57,50 @@ export default async function Page(props: { params: Params }) {
       },
     ],
   };
+  const date = blogPost?.createdAt ? new Date(blogPost.createdAt) : new Date();
+  console.log("Parsed Date:", date.toString()); // Should not be "Invalid Date"
+  console.log("ISO Format:", date.toISOString()); // Should print a valid ISO string
 
   return (
-    <div>
-      <div className="flex w-full items-center justify-end">
+    <div className="max-w-2xl mx-auto px-4 py-8">
+      <div className="flex w-full items-center mb-8 mt-12">
         <BackBtn />
       </div>
 
-      <div className="prose dark:prose-invert">
-        {blogPost?.body ? (
-          <MDXRemote
-            components={{
-              Categories: (props) => (
-                <Categories {...props} categories={categories} />
-              ),
-              code: ({ className, children }) => {
-                const match = /language-(\w+)/.exec(className || "");
-                return (
-                  <CodeBlock
-                    code={String(children).trim()}
-                    language={match?.[1] || "plaintext"}
-                  />
-                );
-              },
-            }}
-            source={blogPost.body}
-          />
-        ) : (
-          <p>No content available.</p>
-        )}
+      <div>
+        <DateCard
+          date={
+            blogPost?.createdAt
+              ? new Date(blogPost.createdAt).toISOString()
+              : new Date().toISOString()
+          }
+          body={blogPost?.body || ""}
+        />
+        <div className="prose dark:prose-invert prose-img:rounded-lg">
+          {blogPost?.body ? (
+            <MDXRemote
+              components={{
+                Categories: (props) => (
+                  <Categories {...props} categories={categories} />
+                ),
+                code: ({ className, children }) => {
+                  const match = /language-(\w+)/.exec(className || "");
+                  return (
+                    <CodeBlock
+                      code={String(children).trim()}
+                      language={match?.[1] || "plaintext"}
+                    />
+                  );
+                },
+              }}
+              source={blogPost.body}
+            />
+          ) : (
+            <p>No content available.</p>
+          )}
+        </div>
       </div>
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
