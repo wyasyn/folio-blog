@@ -31,7 +31,7 @@ export default async function Page(props: { searchParams: SearchParams }) {
         Paginated Blogs ({data.pagination.currentPage} of{" "}
         {data.pagination.totalPages})
       </h1>
-      <div className="my-[3rem] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="my-[3rem] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {data.blogPosts.map((blog) => (
           <div key={blog.id} className="p-4 max-w-[300px] border rounded-xl">
             <h2 className="text-2xl font-medium mb-2">

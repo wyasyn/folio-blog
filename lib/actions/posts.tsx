@@ -243,6 +243,9 @@ export const getRelatedPosts = async (id: number, categoryIds: number[]) => {
         },
       },
       take: 3,
+      include: {
+        categories: true,
+      },
     });
     return relatedPosts;
   } catch (error) {

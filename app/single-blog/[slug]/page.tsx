@@ -8,6 +8,8 @@ import CodeBlock from "@/components/CodeBlock";
 import DateCard from "@/components/DateCard";
 import { unstable_cache } from "next/cache";
 import { Metadata } from "next";
+import MainFooter from "@/components/MainFooter";
+import RelatedBlogs from "@/components/RelatedBlogs";
 
 type Params = Promise<{ slug: string }>;
 
@@ -105,6 +107,15 @@ export default async function Page(props: { params: Params }) {
           )}
         </div>
       </div>
+
+      {blogPost?.id && (
+        <RelatedBlogs
+          id={blogPost.id}
+          categoryIds={blogPost.categories.map((category) => category.id)}
+        />
+      )}
+
+      <MainFooter />
 
       <script
         type="application/ld+json"

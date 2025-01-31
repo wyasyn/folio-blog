@@ -33,7 +33,7 @@ export function BlogCard({
       <div>
         <div className="overflow-clip rounded-t-lg w-full aspect-[4/3]">
           <Image
-            src={image}
+            src={image || "/placeholder-image.jpg"}
             alt={title}
             width={600}
             height={400}

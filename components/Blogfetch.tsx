@@ -40,7 +40,7 @@ export default async function BlogFetch({
           <PaginationMenu
             currentPage={currentPage}
             totalPages={pagination.totalPages}
-            basePath="/single-blog"
+            basePath="/blog"
           />
         </div>
       )}

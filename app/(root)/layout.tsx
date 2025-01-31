@@ -1,4 +1,5 @@
 import AsideBar from "@/components/AsideBar";
+import MainFooter from "@/components/MainFooter";
 
 import Navbar from "@/components/Navbar";
 
@@ -10,9 +11,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
       <section className="border flex flex-col flex-1 gap-4  rounded-lg p-4 mb-[5rem]">
         <div>{children}</div>
 
-        <p className=" mt-auto text-xs text-muted-foreground/50 py-4">
-          {new Date().getFullYear()} - Yasin Walum. All rights reserved.
-        </p>
+        <MainFooter />
       </section>
     </main>
   );

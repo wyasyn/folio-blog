@@ -46,7 +46,7 @@ export const BentoGridItem = ({
     >
       <div className="flex flex-1 w-full h-full min-h-[6rem] relative overflow-clip rounded-xl   border">
         <Image
-          src={image}
+          src={image || "/placeholder-image.jpg"}
           alt={title}
           className="w-full h-full  object-cover group-hover:scale-105 duration-300 transition-all object-center"
           fill
