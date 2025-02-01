@@ -1,0 +1,109 @@
+{
+  "name": "John Doe",
+  "title": "Full-Stack Developer & AI Enthusiast",
+  "description": "I am a passionate computer scientist specializing in full-stack web development, mobile app development, data science, and cybersecurity. With a strong foundation in software engineering, I love solving complex problems and building scalable applications.",
+  "email": "johndoe@example.com",
+  "phone": "+1234567890",
+  "location": "Nairobi, Kenya",
+  "avatar": "https://example.com/profile.jpg",
+  "techStack": [
+    "JavaScript",
+    "TypeScript",
+    "Python",
+    "Go",
+    "Kotlin",
+    "React",
+    "Next.js",
+    "Flutter",
+    "Django",
+    "FastAPI",
+    "Docker"
+  ],
+  "hobbies": [
+    "Coding",
+    "Chess",
+    "Open-Source Contributions",
+    "Blogging",
+    "AI Research"
+  ],
+  "languages": ["English", "Swahili", "French"],
+  "experiences": [
+    {
+      "company": "TechCorp Ltd",
+      "position": "Software Engineer",
+      "startDate": "2022-06-01",
+      "endDate": null,
+      "description": "Developed scalable microservices, optimized database queries, and improved system performance by 30%."
+    },
+    {
+      "company": "InnovateAI",
+      "position": "AI Research Intern",
+      "startDate": "2021-01-01",
+      "endDate": "2021-06-01",
+      "description": "Worked on NLP models and developed a chatbot that improved customer response times by 50%."
+    }
+  ],
+  "educations": [
+    {
+      "school": "University of Nairobi",
+      "degree": "Bachelor's in Computer Science",
+      "fieldOfStudy": "Software Engineering & AI",
+      "startDate": "2020-08-01",
+      "endDate": null
+    }
+  ],
+  "skills": [
+    { "name": "Full-Stack Development", "level": "Expert" },
+    { "name": "Machine Learning", "level": "Advanced" },
+    { "name": "Cybersecurity", "level": "Intermediate" },
+    { "name": "Cloud Computing", "level": "Advanced" }
+  ],
+  "socialLinks": [
+    { "name": "GitHub", "url": "https://github.com/johndoe" },
+    { "name": "LinkedIn", "url": "https://linkedin.com/in/johndoe" },
+    { "name": "Twitter", "url": "https://twitter.com/johndoe" },
+    { "name": "Portfolio", "url": "https://johndoe.dev" }
+  ],
+  "certifications": [
+    {
+      "name": "AWS Certified Developer",
+      "issuer": "Amazon Web Services",
+      "date": "2023-03-10"
+    },
+    {
+      "name": "Google Cloud Associate",
+      "issuer": "Google Cloud",
+      "date": "2022-08-15"
+    }
+  ],
+  "projects": [
+    {
+      "title": "AI-Powered Chatbot",
+      "excerpt": "An NLP-based chatbot that automates customer support.",
+      "slug": "ai-powered-chatbot",
+      "image": "https://example.com/chatbot.jpg",
+      "body": "Developed an AI chatbot using Python and TensorFlow, reducing customer service response time by 50%.",
+      "techUsed": ["Python", "TensorFlow", "FastAPI"]
+    },
+    {
+      "title": "E-Commerce Web App",
+      "excerpt": "A fully responsive e-commerce platform with a custom CMS.",
+      "slug": "ecommerce-platform",
+      "image": "https://example.com/ecommerce.jpg",
+      "body": "Built a scalable e-commerce application using Next.js and Firebase.",
+      "techUsed": ["Next.js", "Firebase", "TailwindCSS"]
+    }
+  ],
+  "testimonials": [
+    {
+      "name": "Jane Smith",
+      "role": "CTO at TechCorp",
+      "message": "John is an exceptional developer with a strong grasp of modern web technologies. He was instrumental in optimizing our API architecture."
+    },
+    {
+      "name": "Michael Johnson",
+      "role": "AI Researcher at InnovateAI",
+      "message": "John's passion for AI and problem-solving skills are outstanding. His work on NLP was game-changing."
+    }
+  ]
+}

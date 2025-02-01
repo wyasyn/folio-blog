@@ -8,7 +8,7 @@
   --muted: 60 4.8% 95.9%;
   --muted-foreground: 25 5.3% 44.7%;
   --secondary: 227 43% 96%;
-  --primary: 25 100% 50%;
+  --primary: 320 100% 91%;
   --border: 20 5.9% 90%;
   --destructive: 0 84.2% 60.2%;
 }
@@ -20,6 +20,7 @@
   --secondary: 0 0% 9%;
   --border: 0 0% 13%;
   --destructive: 0 62.8% 30.6%;
+  --primary: 151 49 14%;
 }
 
 @layer base {
