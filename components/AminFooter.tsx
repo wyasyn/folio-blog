@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PlusCircle, FileText } from "lucide-react";
+import { PlusCircle, FileText, User, Edit2 } from "lucide-react";
 
 export function AdminFooter() {
   return (
@@ -19,6 +19,20 @@ export function AdminFooter() {
           >
             <FileText className="mr-2 h-5 w-5" />
             <span>Create Blog Post</span>
+          </Link>
+          <Link
+            href="/admin/about"
+            className="flex items-center hover:text-foreground transition-colors duration-200"
+          >
+            <User className="mr-2 h-5 w-5" />
+            <span>Add my info</span>
+          </Link>
+          <Link
+            href="/admin/about/edit"
+            className="flex items-center hover:text-foreground transition-colors duration-200"
+          >
+            <Edit2 className="mr-2 h-5 w-5" />
+            <span>Edit my info</span>
           </Link>
         </nav>
         <div className="mt-4 text-center text-muted-foreground text-xs">

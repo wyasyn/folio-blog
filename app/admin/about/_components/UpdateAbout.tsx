@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, type SubmitHandler, useFieldArray } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { X } from "lucide-react";
-import { submitAboutForm } from "@/lib/actions/about";
+import { updateAboutForm } from "@/lib/actions/about";
 import type { AboutFormData } from "@/types/about";
 import {
   Select,
@@ -19,7 +19,116 @@ import {
 } from "@/components/ui/select";
 import toast from "react-hot-toast";
 
-export default function AboutForm() {
+interface DatabaseAboutData {
+  id: number;
+  name: string;
+  title: string;
+  description: string;
+  email: string;
+  phone: string | null;
+  location: string | null;
+  avatar: string | null;
+  techStack: Array<{
+    id: number;
+    name: string;
+    level: string;
+    aboutId: number;
+  }>;
+  hobbies: Array<{
+    id: number;
+    name: string;
+    details: string | null;
+    aboutId: number;
+  }>;
+  languages: Array<{
+    id: number;
+    name: string;
+    fluency: string;
+    aboutId: number;
+  }>;
+  experiences: Array<{
+    id: number;
+    company: string;
+    position: string;
+    startDate: Date;
+    endDate: Date | null;
+    description: string | null;
+    aboutId: number;
+  }>;
+  educations: Array<{
+    id: number;
+    school: string;
+    degree: string;
+    fieldOfStudy: string;
+    startDate: Date;
+    endDate: Date | null;
+    aboutId: number;
+  }>;
+  skills: Array<{
+    id: number;
+    name: string;
+    level: string;
+    aboutId: number;
+  }>;
+  socialLinks: Array<{
+    id: number;
+    name: string;
+    url: string;
+    aboutId: number;
+  }>;
+}
+
+interface AboutUpdateFormProps {
+  initialData: DatabaseAboutData;
+  id: number;
+}
+
+function transformDatabaseDataToFormData(
+  data: DatabaseAboutData
+): AboutFormData {
+  return {
+    name: data.name,
+    title: data.title,
+    description: data.description,
+    email: data.email,
+    phone: data.phone || undefined,
+    location: data.location || undefined,
+    avatar: data.avatar || undefined,
+    techStack: data.techStack.map(({ name, level }) => ({ name, level })),
+    hobbies: data.hobbies.map(({ name, details }) => ({
+      name,
+      details: details || undefined,
+    })),
+    languages: data.languages.map(({ name, fluency }) => ({ name, fluency })),
+    experiences: data.experiences.map(
+      ({ company, position, startDate, endDate, description }) => ({
+        company,
+        position,
+        startDate: startDate.toISOString().split("T")[0],
+        endDate: endDate ? endDate.toISOString().split("T")[0] : undefined,
+        description: description || undefined,
+      })
+    ),
+    educations: data.educations.map(
+      ({ school, degree, fieldOfStudy, startDate, endDate }) => ({
+        school,
+        degree,
+        fieldOfStudy,
+        startDate: startDate.toISOString().split("T")[0],
+        endDate: endDate ? endDate.toISOString().split("T")[0] : undefined,
+      })
+    ),
+    skills: data.skills.map(({ name, level }) => ({ name, level })),
+    socialLinks: data.socialLinks.map(({ name, url }) => ({ name, url })),
+  };
+}
+
+export default function AboutUpdateForm({
+  initialData,
+  id,
+}: AboutUpdateFormProps) {
+  const formData = transformDatabaseDataToFormData(initialData);
+
   const {
     register,
     control,
@@ -29,32 +138,9 @@ export default function AboutForm() {
     watch,
     formState: { errors },
   } = useForm<AboutFormData>({
-    defaultValues: {
-      experiences: [
-        {
-          company: "",
-          position: "",
-          startDate: "",
-          endDate: "",
-          description: "",
-        },
-      ],
-      educations: [
-        {
-          school: "",
-          degree: "",
-          fieldOfStudy: "",
-          startDate: "",
-          endDate: "",
-        },
-      ],
-      techStack: [{ name: "", level: "" }],
-      hobbies: [{ name: "", details: "" }],
-      languages: [{ name: "", fluency: "" }],
-      skills: [{ name: "", level: "" }],
-      socialLinks: [{ name: "", url: "" }],
-    },
+    defaultValues: formData,
   });
+
   const {
     fields: experienceFields,
     append: appendExperience,
@@ -63,6 +149,7 @@ export default function AboutForm() {
     control,
     name: "experiences",
   });
+
   const {
     fields: educationFields,
     append: appendEducation,
@@ -71,6 +158,7 @@ export default function AboutForm() {
     control,
     name: "educations",
   });
+
   const {
     fields: techStackFields,
     append: appendTechStack,
@@ -79,6 +167,7 @@ export default function AboutForm() {
     control,
     name: "techStack",
   });
+
   const {
     fields: hobbyFields,
     append: appendHobby,
@@ -87,6 +176,7 @@ export default function AboutForm() {
     control,
     name: "hobbies",
   });
+
   const {
     fields: languageFields,
     append: appendLanguage,
@@ -96,14 +186,22 @@ export default function AboutForm() {
     name: "languages",
   });
 
-  const [skills, setSkills] = useState<{ name: string; level: string }[]>([]);
+  const [skills, setSkills] = useState<{ name: string; level: string }[]>(
+    formData.skills || []
+  );
   const [skillInput, setSkillInput] = useState({ name: "", level: "" });
   const [socialLinks, setSocialLinks] = useState<
     { name: string; url: string }[]
-  >([]);
+  >(formData.socialLinks || []);
   const [socialInput, setSocialInput] = useState({ name: "", url: "" });
 
   const [successMessage, setSuccessMessage] = useState("");
+
+  useEffect(() => {
+    reset(formData);
+    setSkills(formData.skills || []);
+    setSocialLinks(formData.socialLinks || []);
+  }, [formData, reset]);
 
   const handleRemove = (index: number, removeFunc: (index: number) => void) => {
     removeFunc(index);
@@ -117,35 +215,38 @@ export default function AboutForm() {
         socialLinks: [...socialLinks],
       };
 
-      console.log("Submitting form data:", formData);
+      console.log("Updating form data:", formData);
 
-      const result = await submitAboutForm(formData);
+      const result = await updateAboutForm(formData, id);
 
       if (result.success) {
+        setSuccessMessage("About information updated successfully!");
         if ("data" in result) {
-          setSuccessMessage("Form submitted successfully!");
-          console.log("About Data submitted successfully:", result.data);
+          console.log("About Data updated successfully:", result.data);
         }
-        reset();
-        setSkills([]);
-        setSocialLinks([]);
+        toast.success("About information updated successfully!");
       } else {
         if ("error" in result) {
-          toast.error(`Failed to submit About Data: ${result.error}`);
-
-          console.error("Failed to submit About Data:", result.error);
+          toast.error(`Failed to update About Data: ${result.error}`);
+          console.error("Failed to update About Data:", result.error);
         }
       }
     } catch (error) {
-      console.error("An error occurred while submitting the form:", error);
+      console.error("An error occurred while updating the form:", error);
+      toast.error("An error occurred while updating the form");
     }
   };
 
   const addSkill = () => {
-    if (!skills.some((skill) => skill.name === skillInput.name)) {
+    if (
+      skillInput.name &&
+      skillInput.level &&
+      !skills.some((skill) => skill.name === skillInput.name)
+    ) {
       setSkills([...skills, skillInput]);
+      setSkillInput({ name: "", level: "" });
     } else {
-      toast.error("Skill already exists");
+      toast.error("Invalid skill or skill already exists");
     }
   };
 
@@ -153,6 +254,8 @@ export default function AboutForm() {
     if (socialInput.name && socialInput.url) {
       setSocialLinks([...socialLinks, socialInput]);
       setSocialInput({ name: "", url: "" });
+    } else {
+      toast.error("Please provide both name and URL for the social link");
     }
   };
 
@@ -160,7 +263,7 @@ export default function AboutForm() {
     <Card className="max-w-3xl mx-auto mt-6 p-6">
       <CardContent>
         <h2 className="text-2xl font-semibold mb-4">
-          Create About Information
+          Update About Information
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Basic Information */}
@@ -287,12 +390,6 @@ export default function AboutForm() {
                     <SelectItem value="expert">Expert</SelectItem>
                   </SelectContent>
                 </Select>
-                {errors.techStack?.[index]?.level && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.techStack[index]?.level?.message}
-                  </p>
-                )}
-
                 <Button
                   type="button"
                   onClick={() => handleRemove(index, removeTechStack)}
@@ -335,11 +432,6 @@ export default function AboutForm() {
                 >
                   <X className="h-4 w-4" />
                 </Button>
-                {errors.hobbies?.[index]?.name && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.hobbies[index]?.name?.message}
-                  </p>
-                )}
               </div>
             ))}
             <Button
@@ -382,12 +474,6 @@ export default function AboutForm() {
                     <SelectItem value="native">Native</SelectItem>
                   </SelectContent>
                 </Select>
-                {errors.languages?.[index]?.name && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.languages[index]?.name?.message}
-                  </p>
-                )}
-
                 <Button
                   type="button"
                   onClick={() => handleRemove(index, removeLanguage)}
@@ -564,7 +650,6 @@ export default function AboutForm() {
                   <SelectItem value="expert">Expert</SelectItem>
                 </SelectContent>
               </Select>
-
               <Button type="button" onClick={addSkill}>
                 Add
               </Button>
@@ -655,7 +740,7 @@ export default function AboutForm() {
 
           {/* Submit Button */}
           <Button type="submit" className="w-full">
-            Save About Info
+            Update About Info
           </Button>
           {successMessage && <p className="text-green-500">{successMessage}</p>}
         </form>
