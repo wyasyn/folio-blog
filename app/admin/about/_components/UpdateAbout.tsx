@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/select";
 import toast from "react-hot-toast";
 
+// TODO: Check why education is not adding or updating
+
 interface DatabaseAboutData {
   id: number;
   name: string;
@@ -186,22 +188,21 @@ export default function AboutUpdateForm({
     name: "languages",
   });
 
-  const [skills, setSkills] = useState<{ name: string; level: string }[]>(
-    formData.skills || []
-  );
+  const [skills, setSkills] = useState<{ name: string; level: string }[]>([]);
   const [skillInput, setSkillInput] = useState({ name: "", level: "" });
   const [socialLinks, setSocialLinks] = useState<
     { name: string; url: string }[]
-  >(formData.socialLinks || []);
+  >([]);
   const [socialInput, setSocialInput] = useState({ name: "", url: "" });
 
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    reset(formData);
-    setSkills(formData.skills || []);
-    setSocialLinks(formData.socialLinks || []);
-  }, [formData, reset]);
+    const updatedFormData = transformDatabaseDataToFormData(initialData);
+    reset(updatedFormData);
+    setSkills(updatedFormData.skills || []);
+    setSocialLinks(updatedFormData.socialLinks || []);
+  }, [initialData, reset]);
 
   const handleRemove = (index: number, removeFunc: (index: number) => void) => {
     removeFunc(index);
