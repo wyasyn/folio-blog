@@ -29,6 +29,7 @@ model About {
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   experiences    Experience[]
+  blogPosts      BlogPost[]
   educations     Education[]
   skills         Skill[]
   socialLinks    SocialLink[]
@@ -130,6 +131,8 @@ model BlogPost {
   createdAt  DateTime   @default(now()) @map("created_at")
   updatedAt  DateTime   @updatedAt @map("updated_at")
   categories Category[] @relation("BlogPostToCategory")
+  about      About?     @relation(fields: [aboutId], references: [id])
+  aboutId    Int?
 
   @@map("blog_posts")
 }
@@ -141,8 +144,8 @@ model Project {
   slug       String     @unique
   image      String
   body       String
-  techUsed   String[] // Added for tech stack
-  aboutId    Int? // Optional relation to About model
+  techUsed   String[]
+  aboutId    Int?
   about      About?     @relation(fields: [aboutId], references: [id], onDelete: Cascade)
   createdAt  DateTime   @default(now()) @map("created_at")
   updatedAt  DateTime   @updatedAt @map("updated_at")

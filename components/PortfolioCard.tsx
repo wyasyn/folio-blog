@@ -14,7 +14,7 @@ export default function PortfolioCard({
         className={`relative overflow-clip rounded-lg w-full aspect-[4/3] border group `}
       >
         <Image
-          src={image}
+          src={image || "/placeholder-image.jpg"}
           fill
           className="object-cover object-center z-10 group-hover:scale-110 duration-300 transition-all"
           alt={title}

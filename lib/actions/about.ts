@@ -36,6 +36,7 @@ export async function submitAboutForm(data: AboutFormData) {
       await prisma.techStack.deleteMany({ where: { aboutId: about.id } });
       await prisma.hobby.deleteMany({ where: { aboutId: about.id } });
       await prisma.language.deleteMany({ where: { aboutId: about.id } });
+      await prisma.education.deleteMany({ where: { aboutId: about.id } });
 
       // Insert new experiences if provided
       if (data.experiences.length > 0) {
@@ -47,6 +48,31 @@ export async function submitAboutForm(data: AboutFormData) {
             startDate: new Date(exp.startDate),
             endDate: exp.endDate ? new Date(exp.endDate) : null,
             description: exp.description,
+          })),
+        });
+      }
+
+      // insert new education if provided
+      if (data.educations.length > 0) {
+        await prisma.education.createMany({
+          data: data.educations.map((edu) => ({
+            aboutId: about.id,
+            school: edu.school,
+            degree: edu.degree,
+            fieldOfStudy: edu.fieldOfStudy,
+            startDate: new Date(edu.startDate),
+            endDate: edu.endDate ? new Date(edu.endDate) : null,
+          })),
+        });
+      }
+
+      // Insert new languages if provided
+      if (data.languages.length > 0) {
+        await prisma.language.createMany({
+          data: data.languages.map((lang) => ({
+            aboutId: about.id,
+            name: lang.name,
+            fluency: lang.fluency,
           })),
         });
       }
@@ -90,17 +116,6 @@ export async function submitAboutForm(data: AboutFormData) {
           data: data.hobbies.map((hobby) => ({
             aboutId: about.id,
             name: hobby.name,
-          })),
-        });
-      }
-
-      // Insert new languages if provided
-      if (data.languages.length > 0) {
-        await prisma.language.createMany({
-          data: data.languages.map((lang) => ({
-            aboutId: about.id,
-            name: lang.name,
-            fluency: lang.fluency,
           })),
         });
       }
@@ -149,6 +164,7 @@ export async function updateAboutForm(data: AboutFormData, id: number) {
         prisma.techStack.deleteMany({ where: { aboutId } }),
         prisma.hobby.deleteMany({ where: { aboutId } }),
         prisma.language.deleteMany({ where: { aboutId } }),
+        prisma.education.deleteMany({ where: { aboutId } }),
       ]);
 
       // Helper function to batch insert if data exists
@@ -177,6 +193,18 @@ export async function updateAboutForm(data: AboutFormData, id: number) {
               aboutId,
               name: skill.name,
               level: skill.level,
+            })),
+          })
+        ),
+        insertIfNotEmpty(data.educations, () =>
+          prisma.education.createMany({
+            data: data.educations.map((edu) => ({
+              aboutId,
+              school: edu.school,
+              degree: edu.degree,
+              fieldOfStudy: edu.fieldOfStudy,
+              startDate: new Date(edu.startDate),
+              endDate: edu.endDate ? new Date(edu.endDate) : null,
             })),
           })
         ),

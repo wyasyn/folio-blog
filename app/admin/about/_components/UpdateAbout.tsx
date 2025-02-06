@@ -19,8 +19,6 @@ import {
 } from "@/components/ui/select";
 import toast from "react-hot-toast";
 
-// TODO: Check why education is not adding or updating
-
 interface DatabaseAboutData {
   id: number;
   name: string;
