@@ -17,6 +17,13 @@ export const createPost = async ({
 
   const slug = makeSlug(title);
 
+  const existingAbout = await prisma.about.findFirst();
+
+  if (!existingAbout) {
+    return { error: "About section is not found" };
+  }
+  const aboutId = existingAbout.id;
+
   try {
     // Split the categories string by commas and trim any extra spaces
     const categoryNames = categories
@@ -42,6 +49,7 @@ export const createPost = async ({
         image,
         body,
         slug,
+        aboutId,
         categories: {
           connect: existingCategories.map((category) => ({ id: category.id })),
         },

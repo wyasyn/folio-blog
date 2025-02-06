@@ -48,7 +48,7 @@ export const createProject = async ({
         image,
         body,
         slug,
-        aboutId: aboutId,
+        aboutId,
         categories: {
           connect: existingCategories.map((category) => ({ id: category.id })),
         },

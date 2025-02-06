@@ -14,6 +14,9 @@ model User {
   hashedPin String   @map("hashed_pin")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+  about     About?
+
+  @@map("users")
 }
 
 model About {
@@ -39,6 +42,10 @@ model About {
   techStack      TechStack[]
   hobbies        Hobby[]
   languages      Language[]
+  user           User            @relation(fields: [userId], references: [id])
+  userId         Int             @unique
+
+  @@map("abouts")
 }
 
 model TechStack {
@@ -55,6 +62,8 @@ model Hobby {
   details String?
   aboutId Int
   about   About   @relation(fields: [aboutId], references: [id], onDelete: Cascade)
+
+  @@map("hobbies")
 }
 
 model Language {
@@ -63,6 +72,8 @@ model Language {
   fluency String // e.g., Basic, Conversational, Fluent, Native
   aboutId Int
   about   About  @relation(fields: [aboutId], references: [id], onDelete: Cascade)
+
+  @@map("languages")
 }
 
 model Experience {
@@ -74,6 +85,8 @@ model Experience {
   description String?
   aboutId     Int
   about       About     @relation(fields: [aboutId], references: [id], onDelete: Cascade)
+
+  @@map("experiences")
 }
 
 model Education {
@@ -85,6 +98,8 @@ model Education {
   endDate      DateTime?
   aboutId      Int
   about        About     @relation(fields: [aboutId], references: [id], onDelete: Cascade)
+
+  @@map("educations")
 }
 
 model Skill {
@@ -93,6 +108,8 @@ model Skill {
   level   String // e.g., Beginner, Intermediate, Advanced, Expert
   aboutId Int
   about   About  @relation(fields: [aboutId], references: [id], onDelete: Cascade)
+
+  @@map("skills")
 }
 
 model SocialLink {
@@ -101,6 +118,8 @@ model SocialLink {
   url     String
   aboutId Int
   about   About  @relation(fields: [aboutId], references: [id], onDelete: Cascade)
+
+  @@map("social_links")
 }
 
 model Certification {
@@ -110,6 +129,8 @@ model Certification {
   date    DateTime
   aboutId Int
   about   About    @relation(fields: [aboutId], references: [id], onDelete: Cascade)
+
+  @@map("certifications")
 }
 
 model Testimonial {
@@ -119,6 +140,8 @@ model Testimonial {
   message String
   aboutId Int
   about   About  @relation(fields: [aboutId], references: [id], onDelete: Cascade)
+
+  @@map("testimonials")
 }
 
 model BlogPost {
@@ -131,7 +154,7 @@ model BlogPost {
   createdAt  DateTime   @default(now()) @map("created_at")
   updatedAt  DateTime   @updatedAt @map("updated_at")
   categories Category[] @relation("BlogPostToCategory")
-  about      About?     @relation(fields: [aboutId], references: [id])
+  about      About?     @relation(fields: [aboutId], references: [id], onDelete: Cascade)
   aboutId    Int?
 
   @@map("blog_posts")

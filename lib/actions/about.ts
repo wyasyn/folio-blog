@@ -6,6 +6,17 @@ import { prisma } from "../db";
 
 export async function submitAboutForm(data: AboutFormData) {
   try {
+    // get the user by email
+    const user = await prisma.user.findUnique({
+      where: { email: data.email },
+    });
+
+    // Ensure the user exists before continuing
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // Wrap the transaction in a try-catch block to rollback any changes if necessary
     return await prisma.$transaction(async (prisma) => {
       // Upsert the main About entry (ensuring a single entry per user)
       const about = await prisma.about.upsert({
@@ -26,6 +37,7 @@ export async function submitAboutForm(data: AboutFormData) {
           phone: data.phone,
           location: data.location,
           avatar: data.avatar,
+          userId: user.id,
         },
       });
 
