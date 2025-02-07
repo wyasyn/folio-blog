@@ -156,6 +156,8 @@ export default function AboutForm() {
     }
   };
 
+  // TODO: Include certifications and testimonials
+
   return (
     <Card className="max-w-3xl mx-auto mt-6 p-6">
       <CardContent>
@@ -245,7 +247,7 @@ export default function AboutForm() {
             <Input
               id="location"
               {...register("location")}
-              placeholder="Location (e.g., Nairobi, Kenya)"
+              placeholder="Location (e.g., Kampala, Uganda)"
             />
           </div>
 
