@@ -34,6 +34,7 @@ model About {
   experiences    Experience[]
   blogPosts      BlogPost[]
   educations     Education[]
+  images         Image[]
   skills         Skill[]
   socialLinks    SocialLink[]
   certifications Certification[]
@@ -43,7 +44,7 @@ model About {
   hobbies        Hobby[]
   languages      Language[]
   user           User            @relation(fields: [userId], references: [id])
-  userId         Int             @unique
+  userId         Int             @unique @map("user_id")
 
   @@map("abouts")
 }
@@ -52,7 +53,7 @@ model TechStack {
   id      Int    @id @default(autoincrement())
   name    String
   level   String // e.g., Beginner, Intermediate, Advanced, Expert
-  aboutId Int
+  aboutId Int    @map("about_id")
   about   About  @relation(fields: [aboutId], references: [id], onDelete: Cascade)
 }
 
@@ -60,7 +61,7 @@ model Hobby {
   id      Int     @id @default(autoincrement())
   name    String
   details String?
-  aboutId Int
+  aboutId Int     @map("about_id")
   about   About   @relation(fields: [aboutId], references: [id], onDelete: Cascade)
 
   @@map("hobbies")
@@ -70,7 +71,7 @@ model Language {
   id      Int    @id @default(autoincrement())
   name    String
   fluency String // e.g., Basic, Conversational, Fluent, Native
-  aboutId Int
+  aboutId Int    @map("about_id")
   about   About  @relation(fields: [aboutId], references: [id], onDelete: Cascade)
 
   @@map("languages")
@@ -83,7 +84,7 @@ model Experience {
   startDate   DateTime
   endDate     DateTime?
   description String?
-  aboutId     Int
+  aboutId     Int       @map("about_id")
   about       About     @relation(fields: [aboutId], references: [id], onDelete: Cascade)
 
   @@map("experiences")
@@ -96,7 +97,7 @@ model Education {
   fieldOfStudy String
   startDate    DateTime
   endDate      DateTime?
-  aboutId      Int
+  aboutId      Int       @map("about_id")
   about        About     @relation(fields: [aboutId], references: [id], onDelete: Cascade)
 
   @@map("educations")
@@ -116,7 +117,7 @@ model SocialLink {
   id      Int    @id @default(autoincrement())
   name    String // e.g., GitHub, LinkedIn, Twitter
   url     String
-  aboutId Int
+  aboutId Int    @map("about_id")
   about   About  @relation(fields: [aboutId], references: [id], onDelete: Cascade)
 
   @@map("social_links")
@@ -127,7 +128,7 @@ model Certification {
   name    String
   issuer  String
   date    DateTime
-  aboutId Int
+  aboutId Int      @map("about_id")
   about   About    @relation(fields: [aboutId], references: [id], onDelete: Cascade)
 
   @@map("certifications")
@@ -138,7 +139,7 @@ model Testimonial {
   name    String
   role    String
   message String
-  aboutId Int
+  aboutId Int    @map("about_id")
   about   About  @relation(fields: [aboutId], references: [id], onDelete: Cascade)
 
   @@map("testimonials")
@@ -187,4 +188,18 @@ model Category {
   projects  Project[]  @relation("ProjectToCategory")
 
   @@map("categories")
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  url       String
+  altText   String?  @map("alt_text")
+  width     Int?
+  height    Int?
+  about     About?   @relation(fields: [aboutId], references: [id], onDelete: Cascade)
+  aboutId   Int?     @map("about_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("images")
 }

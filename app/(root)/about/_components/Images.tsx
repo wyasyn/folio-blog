@@ -22,11 +22,6 @@ export const images = [
     src: "https://images.unsplash.com/photo-1601455763557-db1bea8a9a5a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGF2YXRhcnN8ZW58MHx8MHx8fDA%3D",
     alt: "Image 4",
   },
-  {
-    id: 5,
-    src: "https://images.unsplash.com/photo-1520283818086-3f6dffb019c0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGF2YXRhcnN8ZW58MHx8MHx8fDA%3D",
-    alt: "Image 5",
-  },
 ];
 
 export default function Images() {
@@ -34,7 +29,7 @@ export default function Images() {
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-12 auto-rows-[100px] sm:auto-rows-[200px] md:auto-rows-[150px] lg:auto-rows-[200px]">
       {images.map((image, index) => (
         <Link
-          href={`/photos/${image.id}`}
+          href={`/photo/${image.id}`}
           passHref
           key={image.src}
           className={`relative overflow-hidden rounded-md bg-secondary 

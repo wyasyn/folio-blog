@@ -42,10 +42,7 @@ export default async function page() {
     <div id="about">
       <small className="uppercase text-primary">About me</small>
       <h2 className="capitalize text-4xl my-4">A Glimpse into My Journey</h2>
-      <p className="max-w-[35ch]">
-        Discover more about my experiences, the projects I’m passionate about,
-        and the ideas that fuel my creativity.
-      </p>
+      <p className="max-w-prose">{data.description}</p>
 
       <div className="my-[3rem]">
         <Skills
