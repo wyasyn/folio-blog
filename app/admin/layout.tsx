@@ -26,3 +26,5 @@ export default async function layout({
     </div>
   );
 }
+
+// TODO: Include the image components to admin
