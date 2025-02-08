@@ -1,33 +1,38 @@
-import Image from "next/image";
 import Experience from "./_components/Experience";
-import laptopImage from "@/assets/original-635266f60586f8b46bcc4305c43727ce.png";
+
 import Stats from "./_components/Stats";
 import Faqs from "./_components/Faqs";
 
 import { Person, WithContext } from "schema-dts";
 import { Metadata } from "next";
+import { getAboutInfo } from "@/lib/actions/about";
+import Skills from "./_components/Skills";
+import Images from "./_components/Images";
 
 export const metadata: Metadata = {
   title: "About Me ",
 };
 
-export default function page() {
+export default async function page() {
+  const { data, success } = await getAboutInfo();
+
+  if (!success || !data) {
+    return (
+      <div className="mx-auto py-14 bg-red-300 border border-red-700 rounded-lg text-red-700 px-8">
+        No about data found!
+      </div>
+    );
+  }
   const jsonLd: WithContext<Person> = {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: "Yasin Walum",
-    description:
-      "I am a passionate software engineer who loves building innovative solutions. I have a strong background in programming languages and frameworks.",
-    image: [
-      "https://res.cloudinary.com/dkdteb9m5/image/upload/v1731179025/personal%20finance/lj5hjqhmvaeqdsrfcwky.jpg",
-    ],
+    name: data.name,
+    description: data.description,
+    image: data.avatar ? [data.avatar] : [],
     url: "https://ywalum.com",
-    sameAs: [
-      "https://github.com/wyasyn",
-      "https://www.linkedin.com/in/yasin-walum",
-    ],
-    jobTitle: "Software Engineer",
-    homeLocation: "Kampala, Uganda",
+    sameAs: data.socialLinks.map((link) => link.url),
+    jobTitle: data.title,
+    homeLocation: data.location ? data.location : "",
 
     nationality: "Ugandan",
 
@@ -43,18 +48,17 @@ export default function page() {
       </p>
 
       <div className="my-[3rem]">
-        <Experience />
-        <div>
-          <Image
-            src={laptopImage.src}
-            width={laptopImage.width}
-            height={laptopImage.height}
-            alt={laptopImage.src}
-            placeholder="blur"
-            blurDataURL={laptopImage.blurDataURL}
-            className="object-cover w-full rounded-xl my-12"
-          />
-        </div>
+        <Skills
+          skills={data.skills}
+          education={data.educations}
+          languages={data.languages}
+          hobbies={data.hobbies}
+        />
+        {data.experiences.length > 0 && (
+          <Experience experiences={data.experiences} />
+        )}
+
+        <Images />
         <Stats />
         <Faqs />
       </div>
