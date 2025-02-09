@@ -8,11 +8,15 @@ export default async function ImageGallery() {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       {images.map((image) => (
         <ImageItem
           key={image.id}
-          image={{ ...image, altText: image.altText || "" }}
+          id={image.id}
+          url={image.url}
+          altText={image.altText || "Image of Yasin"}
+          width={image.width || 320}
+          height={image.height || 320}
         />
       ))}
     </div>

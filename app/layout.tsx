@@ -1,15 +1,27 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+// import { Inter, Playfair_Display } from "next/font/google";
+import localFont from "next/font/local";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
 import { ThemeProvider } from "@/providers/theme-provider";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-const playfair = Playfair_Display({
-  subsets: ["latin"],
+// const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+// const playfair = Playfair_Display({
+//   subsets: ["latin"],
+//   variable: "--font-serif",
+// });
+
+const playfair = localFont({
+  src: "../lib/fonts/PlayfairDisplay.ttf",
+  display: "swap",
   variable: "--font-serif",
+});
+const inter = localFont({
+  src: "../lib/fonts/Inter.ttf",
+  display: "swap",
+  variable: "--font-sans",
 });
 
 export const metadata: Metadata = {

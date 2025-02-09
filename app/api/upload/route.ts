@@ -34,6 +34,11 @@ export async function POST(request: Request) {
       throw new Error("Invalid upload result");
     }
 
+    const aboutInfo = await prisma.about.findFirst();
+    if (!aboutInfo) {
+      throw new Error("About info not found");
+    }
+
     const { secure_url, width, height } = uploadResult as {
       secure_url: string;
       width: number;
@@ -46,6 +51,7 @@ export async function POST(request: Request) {
         altText,
         width,
         height,
+        aboutId: aboutInfo.id,
       },
     });
 

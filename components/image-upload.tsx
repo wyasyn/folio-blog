@@ -4,10 +4,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type React from "react"; // Added import for React
 import toast from "react-hot-toast";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { Image as ImageLucide } from "lucide-react";
 
 export default function ImageUploadForm() {
   const [file, setFile] = useState<File | null>(null);
   const [altText, setAltText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -19,6 +23,7 @@ export default function ImageUploadForm() {
     formData.append("altText", altText);
 
     try {
+      setIsLoading(true);
       const response = await fetch("/api/upload", {
         method: "POST",
         body: formData,
@@ -33,52 +38,53 @@ export default function ImageUploadForm() {
       }
     } catch (error) {
       console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4 max-w-sm mx-auto">
       <div>
-        <label
-          htmlFor="file"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="file" className="block text-sm font-medium ">
           Image
         </label>
-        <input
-          type="file"
-          id="file"
-          accept="image/*"
-          onChange={(e) => setFile(e.target.files?.[0] || null)}
-          className="mt-1 block w-full text-sm text-gray-500
-            file:mr-4 file:py-2 file:px-4
-            file:rounded-full file:border-0
-            file:text-sm file:font-semibold
-            file:bg-violet-50 file:text-violet-700
-            hover:file:bg-violet-100"
-        />
+        <div className="w-[150px] gap-3 flex flex-col items-center justify-center aspect-square border rounded-lg border-dotted relative border-emerald-400/15 bg-emerald-400/5 p-3">
+          <input
+            type="file"
+            id="file"
+            accept="image/*"
+            onChange={(e) => setFile(e.target.files?.[0] || null)}
+            className="absolute inset-0 top-0 left-0 w-full h-full opacity-0 z-50"
+          />
+          <ImageLucide className="text-emerald-600" />
+          <div className="text-xs text-center">
+            {file
+              ? file.name
+              : "Drag and drop an image here or click to select one"}
+          </div>
+        </div>
       </div>
       <div>
-        <label
-          htmlFor="altText"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="altText" className="block text-sm font-medium">
           Alt Text
         </label>
-        <input
+        <Input
           type="text"
           id="altText"
           value={altText}
           onChange={(e) => setAltText(e.target.value)}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
       </div>
-      <button
-        type="submit"
-        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-      >
-        Upload Image
-      </button>
+      <Button variant="secondary" type="submit" disabled={isLoading}>
+        {isLoading ? (
+          <>loading...</>
+        ) : (
+          <>
+            <ImageLucide /> Upload Image
+          </>
+        )}
+      </Button>
     </form>
   );
 }

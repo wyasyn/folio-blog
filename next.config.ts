@@ -6,11 +6,8 @@ const nextConfig = {
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   // Optionally, add any other Next.js config below
   images: {
+    unoptimized: true,
     remotePatterns: [
-      {
-        protocol: "https" as const,
-        hostname: "cdn.dribbble.com",
-      },
       {
         protocol: "https" as const,
         hostname: "images.unsplash.com",

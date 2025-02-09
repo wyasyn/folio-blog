@@ -2,20 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
 import { getCurrentUser, loginUser } from "../_actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import { MouseIcon } from "lucide-react";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { OTPInput, SlotProps } from "input-otp";
+import { useId } from "react";
 
 export default function LoginForm() {
+  const id = useId();
   const router = useRouter();
   useEffect(() => {
     async function fetchData() {
@@ -55,7 +53,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto space-y-4">
+    <div className="w-full max-w-[270px] mx-auto space-y-4">
       <Link
         href="/"
         className="mb-14 block  hover:text-primary transition-all duration-300 group"
@@ -75,21 +73,20 @@ export default function LoginForm() {
             />
           </div>
           <div className="space-y-2 mx-auto flex flex-col items-center">
-            <Label htmlFor="pin">6-Digit PIN</Label>
-            <InputOTP
+            <OTPInput
+              id={id}
               maxLength={6}
               value={pin}
+              containerClassName="flex items-center gap-3 has-[:disabled]:opacity-50"
               onChange={(value) => setPin(value)}
-            >
-              <InputOTPGroup>
-                <InputOTPSlot index={0} />
-                <InputOTPSlot index={1} />
-                <InputOTPSlot index={2} />
-                <InputOTPSlot index={3} />
-                <InputOTPSlot index={4} />
-                <InputOTPSlot index={5} />
-              </InputOTPGroup>
-            </InputOTP>
+              render={({ slots }) => (
+                <div className="flex gap-2">
+                  {slots.map((slot, idx) => (
+                    <Slot key={idx} {...slot} />
+                  ))}
+                </div>
+              )}
+            />
           </div>
           <Button
             type="submit"
@@ -98,6 +95,12 @@ export default function LoginForm() {
           >
             {isLoading ? "Logging in..." : "Login"}
           </Button>
+          <Link
+            href="/recover-pin"
+            className="block mt-6 text-sm text-gray-600"
+          >
+            Forgot your pin?
+          </Link>
         </form>
       ) : null}
       {message && (
@@ -110,6 +113,19 @@ export default function LoginForm() {
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
+    </div>
+  );
+}
+
+function Slot(props: SlotProps) {
+  return (
+    <div
+      className={cn(
+        "flex size-9 items-center justify-center rounded-lg border border-input bg-background font-medium text-foreground shadow-sm shadow-black/5 transition-shadow",
+        { "z-10 border border-ring ring-[3px] ring-ring/20": props.isActive }
+      )}
+    >
+      {props.char !== null && <div>{props.char}</div>}
     </div>
   );
 }
