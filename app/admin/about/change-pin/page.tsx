@@ -1,4 +1,10 @@
 import { ChangePinForm } from "@/components/change-pin-form";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Change PIN ",
+  description: "Change your PIN ",
+};
 
 export default function ChangePinPage() {
   return (

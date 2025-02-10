@@ -4,14 +4,14 @@ import { PaginationMenu } from "@/components/Pagination";
 import { getPaginatedBlogPosts } from "@/lib/actions/posts";
 import Link from "next/link";
 
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+type SearchParams = Promise<{ page: string }>;
 
-export default async function Page(props: { searchParams: SearchParams }) {
-  const searchParams = await props.searchParams;
-
-  const page = Array.isArray(searchParams.page)
-    ? searchParams.page[0]
-    : searchParams.page;
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const { page } = await searchParams;
   const currentPage = parseInt(page ?? "1") || 1;
   const pageSize = 6; // Adjust as needed
 

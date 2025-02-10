@@ -2,11 +2,11 @@ import NotFound from "@/app/not-found";
 import AdminTitle from "@/components/AdminTitle";
 import EditBlogPost from "@/components/editPost";
 import { getBlogPostById } from "@/lib/actions/posts";
-import { unstable_cache } from "next/cache";
+import { cache } from "react";
 
 type Params = Promise<{ id: string }>;
 
-const getCachedBlog = unstable_cache(async (id: string) => {
+const getCachedBlog = cache(async (id: string) => {
   const { blogPost } = await getBlogPostById(parseInt(id));
   if (!blogPost) NotFound();
   return blogPost;

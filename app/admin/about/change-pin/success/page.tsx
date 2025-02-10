@@ -1,5 +1,11 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "PIN Changed Successfully | Yasin Walum",
+  description: "Your PIN has been updated successfully.",
+};
 
 export default function ChangePinSuccessPage() {
   return (

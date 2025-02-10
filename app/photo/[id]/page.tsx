@@ -1,11 +1,19 @@
 export const dynamicParams = false;
-import { images } from "@/app/(root)/about/_components/Images";
-import { unstable_cache } from "next/cache";
+import { getImageById, getImages } from "@/lib/actions/image";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 
-const getImage = unstable_cache(async (id) => {
-  const image = images.find((img) => img.id === Number.parseInt(id));
+export async function generateStaticParams() {
+  const images = await getImages();
+  if (!images) notFound();
+  return images.map((image) => ({
+    id: image.id,
+  }));
+}
+
+const getImage = cache(async (id: number) => {
+  const image = await getImageById(id);
   if (!image) notFound();
   return image;
 });
@@ -16,14 +24,14 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }) {
   const id = (await params).id;
-  const image = await getImage(id);
+  const image = await getImage(Number.parseInt(id));
   return {
-    title: `Image ${id}`,
-    description: `Image ${id} description`,
+    title: image.altText,
+    description: image.altText,
     openGraph: {
       title: `Image ${id}`,
-      description: `Image ${id} description`,
-      images: [{ url: image.src }],
+      description: image.altText,
+      images: [{ url: image.url }],
     },
   };
 }
@@ -34,15 +42,15 @@ export default async function PhotoPage({
   params: Promise<{ id: string }>;
 }) {
   const id = (await params).id;
-  const image = await getImage(id);
+  const image = await getImage(Number.parseInt(id));
   return (
     <div className="grid place-items-center p-12">
       <Image
-        src={image.src}
+        src={image.url}
         className="object-cover rounded-xl shadow-sm object-center"
         alt="image 1"
-        width={650}
-        height={650}
+        width={image.width || 650}
+        height={image.height || 650}
       />
     </div>
   );

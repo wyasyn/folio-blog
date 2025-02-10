@@ -4,16 +4,24 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 
 import BackBtn from "@/components/BackBtn";
 import Categories from "@/components/CategoriesBadges";
-import { getProjectBySlug } from "@/lib/actions/project";
+import { getPaginatedProjects, getProjectBySlug } from "@/lib/actions/project";
 import { Article, WithContext } from "schema-dts";
 import CodeBlock from "@/components/CodeBlock";
-import { unstable_cache } from "next/cache";
+import { cache } from "react";
+
+export async function generateStaticParams() {
+  const { projects } = await getPaginatedProjects();
+
+  return projects.map((project) => ({
+    slug: project.slug,
+  }));
+}
 
 type Params = {
   params: Promise<{ slug: string }>;
 };
 
-const getCashedProject = unstable_cache(async (slug) => {
+const getCashedProject = cache(async (slug: string) => {
   const { project } = await getProjectBySlug(slug);
   if (!project) notFound();
   return project;

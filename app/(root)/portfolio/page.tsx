@@ -1,18 +1,18 @@
 import FeaturedProjects from "@/components/FeaturedProjects";
 import { Metadata } from "next";
 
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+type SearchParams = Promise<{ page: string }>;
 
 export const metadata: Metadata = {
   title: "Portfolio ",
 };
 
-export default async function Page(props: { searchParams: SearchParams }) {
-  const searchParams = await props.searchParams;
-
-  const page = Array.isArray(searchParams.page)
-    ? searchParams.page[0]
-    : searchParams.page;
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const { page } = await searchParams;
   const currentPage = parseInt(page ?? "1") || 1;
 
   return (

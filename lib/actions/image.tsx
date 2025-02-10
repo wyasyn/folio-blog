@@ -55,3 +55,14 @@ export const getImages = async () => {
     console.log(error);
   }
 };
+
+export const getImageById = async (id: number) => {
+  try {
+    const image = prisma.image.findUnique({
+      where: { id },
+    });
+    return image;
+  } catch (error) {
+    console.log(error);
+  }
+};

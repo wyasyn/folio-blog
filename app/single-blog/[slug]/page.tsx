@@ -1,19 +1,27 @@
 import NotFound from "@/app/not-found";
 import BackBtn from "@/components/BackBtn";
 import Categories from "@/components/CategoriesBadges";
-import { getBlogPostBySlug } from "@/lib/actions/posts";
+import { getBlogPostBySlug, getPaginatedBlogPosts } from "@/lib/actions/posts";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { Article, WithContext } from "schema-dts";
 import CodeBlock from "@/components/CodeBlock";
 import DateCard from "@/components/DateCard";
-import { unstable_cache } from "next/cache";
 import { Metadata } from "next";
 import MainFooter from "@/components/MainFooter";
 import RelatedBlogs from "@/components/RelatedBlogs";
+import { cache } from "react";
+
+export async function generateStaticParams() {
+  const { blogPosts } = await getPaginatedBlogPosts();
+
+  return blogPosts.map((post) => ({
+    slug: post.slug,
+  }));
+}
 
 type Params = Promise<{ slug: string }>;
 
-const getCachedBlog = unstable_cache(async (slug) => {
+const getCachedBlog = cache(async (slug: string) => {
   const { blogPost } = await getBlogPostBySlug(slug);
   if (!blogPost) NotFound();
   return blogPost;

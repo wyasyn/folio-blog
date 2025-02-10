@@ -3,18 +3,18 @@ import LoadingUI from "@/components/LoadingUI";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+type SearchParams = Promise<{ page: string }>;
 
 export const metadata: Metadata = {
   title: "Blog post ",
 };
 
-export default async function page(props: { searchParams: SearchParams }) {
-  const searchParams = await props.searchParams;
-
-  const page = Array.isArray(searchParams.page)
-    ? searchParams.page[0]
-    : searchParams.page;
+export default async function page({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const { page } = await searchParams;
   const currentPage = parseInt(page ?? "1") || 1;
   const pageSize = 4;
   return (
