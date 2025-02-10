@@ -56,6 +56,7 @@ export default async function page() {
         )}
 
         <Images />
+
         <Stats />
         <Faqs />
       </div>

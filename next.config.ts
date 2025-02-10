@@ -1,32 +1,26 @@
-import createMDX from "@next/mdx";
+// @ts-check
+import withPlaiceholder from "@plaiceholder/next";
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  // Configure `pageExtensions` to include markdown and MDX files
-  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
-  // Optionally, add any other Next.js config below
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
-    remotePatterns: [
-      {
-        protocol: "https" as const,
-        hostname: "images.unsplash.com",
-      },
-      {
-        protocol: "https" as const,
-        hostname: "res.cloudinary.com",
-      },
-      {
-        protocol: "https" as const,
-        hostname: "unsplash.com",
-      },
-    ],
+    // remotePatterns: [
+    //   {
+    //     protocol: "https",
+    //     hostname: "images.unsplash.com",
+    //   },
+    //   {
+    //     protocol: "https",
+    //     hostname: "res.cloudinary.com",
+    //   },
+    //   {
+    //     protocol: "https",
+    //     hostname: "unsplash.com",
+    //   },
+    // ],
   },
 };
 
-const withMDX = createMDX({
-  // Add markdown plugins here, as desired
-});
-
-// Merge MDX config with Next.js config
-export default withMDX(nextConfig);
+export default withPlaiceholder(nextConfig);

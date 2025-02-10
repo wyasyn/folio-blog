@@ -50,6 +50,7 @@ export const BentoGridItem = ({
           alt={title}
           className="w-full h-full  object-cover group-hover:scale-105 duration-300 transition-all object-center"
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
       <div className="group-hover/bento:translate-x-2 transition duration-200">

@@ -8,7 +8,7 @@ export async function generateStaticParams() {
   const images = await getImages();
   if (!images) notFound();
   return images.map((image) => ({
-    id: image.id,
+    id: `${image.id}`,
   }));
 }
 
@@ -43,11 +43,12 @@ export default async function PhotoPage({
 }) {
   const id = (await params).id;
   const image = await getImage(Number.parseInt(id));
+
   return (
-    <div className="grid place-items-center p-12">
+    <div className="grid place-items-center p-12 relative">
       <Image
         src={image.url}
-        className="object-cover rounded-xl shadow-sm object-center"
+        className="object-cover w-full rounded-xl shadow-sm object-center max-w-[640px]"
         alt="image 1"
         width={image.width || 650}
         height={image.height || 650}

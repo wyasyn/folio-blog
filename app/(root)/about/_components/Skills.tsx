@@ -46,7 +46,7 @@ export default function Skills({
             <li
               key={skill.id}
               title={skill.level}
-              className="hover:bg-secondary duration-300 p-2 rounded-lg transition-all"
+              className="hover:bg-secondary duration-300 p-2 rounded-lg transition-all capitalize"
             >
               {skill.name}
             </li>
@@ -59,7 +59,7 @@ export default function Skills({
             <li
               key={education.id}
               title={education.school}
-              className="hover:bg-secondary duration-300 p-2 rounded-lg transition-all"
+              className="hover:bg-secondary duration-300 p-2 rounded-lg transition-all capitalize"
             >
               {education.degree}
             </li>
@@ -72,7 +72,7 @@ export default function Skills({
             <li
               key={language.id}
               title={language.fluency}
-              className="hover:bg-secondary duration-300 p-2 rounded-lg transition-all"
+              className="hover:bg-secondary duration-300 p-2 rounded-lg transition-all capitalize"
             >
               {language.name}
             </li>
@@ -85,7 +85,7 @@ export default function Skills({
             <li
               key={hobby.id}
               title={hobby.details ?? undefined}
-              className="hover:bg-secondary duration-300 p-2 rounded-lg transition-all"
+              className="hover:bg-secondary duration-300 p-2 rounded-lg transition-all capitalize"
             >
               {hobby.name}
             </li>
