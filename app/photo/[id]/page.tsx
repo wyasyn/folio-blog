@@ -47,13 +47,24 @@ export default async function PhotoPage({
   const image = await getImage(Number.parseInt(id));
 
   return (
-    <div className="grid place-items-center p-12 relative">
+    <div
+      className="grid place-items-center min-h-screen relative"
+      style={{
+        backgroundImage: `url('${image.blurDataUrl}')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <Image
         src={image.url}
-        className="object-cover w-full rounded-xl shadow-sm object-center max-w-[640px]"
+        className="object-cover my-auto rounded-xl shadow-sm object-center h-[75vh] w-auto"
         alt="image 1"
         width={image.width || 650}
         height={image.height || 650}
+        priority
+        blurDataURL={image.blurDataUrl}
+        placeholder="blur"
       />
     </div>
   );

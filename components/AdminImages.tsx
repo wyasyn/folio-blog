@@ -17,6 +17,7 @@ export default async function ImageGallery() {
           altText={image.altText || "Image of Yasin"}
           width={image.width || 320}
           height={image.height || 320}
+          blurDataUrl={image.blurDataUrl}
         />
       ))}
     </div>

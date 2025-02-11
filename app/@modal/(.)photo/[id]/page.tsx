@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Modal } from "@/app/(root)/about/_components/modal";
 import { getImageById, getImages } from "@/lib/actions/image";
 import { use } from "react";
+import { AnimatePresence, motion } from "motion/react";
 
 export default function PhotoModal({
   params,
@@ -17,13 +18,20 @@ export default function PhotoModal({
   const photoId = parseInt(id);
 
   const [images, setImages] = useState<
-    { id: number; url: string; width: number; height: number }[]
+    {
+      id: number;
+      url: string;
+      width: number;
+      height: number;
+      blurDataUrl: string;
+    }[]
   >([]);
   const [currentImage, setCurrentImage] = useState<{
     id: number;
     url: string;
     width: number;
     height: number;
+    blurDataUrl: string;
   } | null>(null);
 
   useEffect(() => {
@@ -35,7 +43,13 @@ export default function PhotoModal({
       setImages(
         allImages.filter(
           (img) => img.width !== null && img.height !== null
-        ) as { id: number; url: string; width: number; height: number }[]
+        ) as {
+          id: number;
+          url: string;
+          width: number;
+          height: number;
+          blurDataUrl: string;
+        }[]
       );
       if (image.width !== null && image.height !== null) {
         setCurrentImage({
@@ -43,6 +57,7 @@ export default function PhotoModal({
           url: image.url,
           width: image.width,
           height: image.height,
+          blurDataUrl: image.blurDataUrl,
         });
       }
     }
@@ -77,13 +92,30 @@ export default function PhotoModal({
           )}
 
           {/* Image */}
-          <Image
-            src={currentImage.url}
-            alt={`Image ${currentImage.id}`}
-            width={currentImage.width || 640}
-            height={currentImage.height || 640}
-            className="object-cover object-center rounded-lg w-full h-full"
-          />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentImage.id} // Ensure animation triggers on image change
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -100 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            >
+              <Image
+                src={currentImage.url}
+                alt={`Image ${currentImage.id}`}
+                width={currentImage.width || 640}
+                height={currentImage.height || 640}
+                placeholder="blur"
+                blurDataURL={currentImage.blurDataUrl}
+                sizes="(max-width: 640px) 100vw, 
+                  (max-width: 768px) 50vw, 
+                  (max-width: 1024px) 33vw, 
+                  25vw"
+                priority
+                className="object-cover object-center rounded-lg w-full h-full"
+              />
+            </motion.div>
+          </AnimatePresence>
 
           {/* Next Button */}
           {images.length > 1 && (

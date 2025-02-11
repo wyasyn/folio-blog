@@ -21,6 +21,7 @@ export default async function Images() {
             url={image.url || "/placeholder-image.jpg"}
             altText={image.altText || "Yasyn image"}
             index={index}
+            blurDataURL={image.blurDataUrl}
           />
         </Link>
       ))}
