@@ -3,9 +3,10 @@ import { v2 as cloudinary } from "cloudinary";
 import { prisma } from "@/lib/db";
 
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
+  secure: true,
 });
 
 export async function POST(request: Request) {
@@ -39,11 +40,14 @@ export async function POST(request: Request) {
       throw new Error("About info not found");
     }
 
-    const { secure_url, width, height } = uploadResult as {
-      secure_url: string;
-      width: number;
-      height: number;
-    };
+    const { secure_url, width, height, public_id, blurDataUrl } =
+      uploadResult as {
+        secure_url: string;
+        width: number;
+        height: number;
+        public_id: string;
+        blurDataUrl: string;
+      };
 
     const image = await prisma.image.create({
       data: {
@@ -52,6 +56,8 @@ export async function POST(request: Request) {
         width,
         height,
         aboutId: aboutInfo.id,
+        publicId: public_id,
+        blurDataUrl,
       },
     });
 

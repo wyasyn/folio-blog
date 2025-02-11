@@ -4,6 +4,8 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
+export const revalidate = 604800;
+
 export async function generateStaticParams() {
   const images = await getImages();
   if (!images) notFound();

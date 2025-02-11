@@ -11,6 +11,8 @@ import MainFooter from "@/components/MainFooter";
 import RelatedBlogs from "@/components/RelatedBlogs";
 import { cache } from "react";
 
+export const revalidate = 604800;
+
 export async function generateStaticParams() {
   const { blogPosts } = await getPaginatedBlogPosts();
 

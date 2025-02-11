@@ -191,15 +191,17 @@ model Category {
 }
 
 model Image {
-  id        Int      @id @default(autoincrement())
-  url       String
-  altText   String?  @map("alt_text")
-  width     Int?
-  height    Int?
-  about     About?   @relation(fields: [aboutId], references: [id], onDelete: Cascade)
-  aboutId   Int?     @map("about_id")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id          Int      @id @default(autoincrement())
+  url         String
+  altText     String?  @map("alt_text")
+  width       Int?
+  height      Int?
+  publicId    String   @map("public_id")
+  blurDataUrl String
+  about       About?   @relation(fields: [aboutId], references: [id], onDelete: Cascade)
+  aboutId     Int?     @map("about_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("images")
 }
