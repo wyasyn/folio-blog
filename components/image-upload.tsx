@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Image as ImageLucide } from "lucide-react";
-import { revalidatePath } from "next/cache";
 
 export default function ImageUploadForm() {
   const [file, setFile] = useState<File | null>(null);
@@ -35,7 +34,6 @@ export default function ImageUploadForm() {
         setAltText("");
         toast.success("Image uploaded successfully");
         router.refresh();
-        revalidatePath("/about");
       } else {
         toast.error("Upload failed");
       }
