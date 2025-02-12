@@ -9,7 +9,7 @@ import { Article, WithContext } from "schema-dts";
 import CodeBlock from "@/components/CodeBlock";
 import { cache } from "react";
 
-export const revalidate = 604800;
+export const revalidate = 86400;
 
 export async function generateStaticParams() {
   const { projects } = await getPaginatedProjects();

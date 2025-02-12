@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { cache, Suspense } from "react";
 
 export const dynamicParams = false;
-export const revalidate = 604800; // 1 week
+export const revalidate = 86400;
 
 const getImage = cache(async (id: number) => {
   try {
