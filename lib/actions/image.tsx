@@ -4,7 +4,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { prisma } from "../db";
 
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
@@ -20,8 +20,7 @@ export async function deleteImage(id: number) {
       throw new Error("Image not found");
     }
 
-    // Extract the public_id from the Cloudinary URL
-    const publicId = image.url.split("/").pop()?.split(".")[0];
+    const publicId = image.publicId;
 
     if (!publicId) {
       throw new Error("Invalid Cloudinary URL");
