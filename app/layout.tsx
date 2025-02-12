@@ -5,6 +5,8 @@ import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
 import { ThemeProvider } from "@/providers/theme-provider";
 
 // const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -85,7 +87,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    url: "https://ywalum.com",
+    url: baseUrl,
     siteName: "Yasin Walum",
     title:
       "Yasin Walum | Software Developer, Machine Learning & Data Science Specialist",
