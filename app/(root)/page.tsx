@@ -1,7 +1,9 @@
+// import { InfiniteSliderHoverSpeedSkills } from "@/components/infinite-scroll-skills";
 import PrimaryBtn from "@/components/PrimaryBtn";
 import SecondaryBtn from "@/components/SecondaryBtn";
 import SelectedWorks from "@/components/SelectedWorks";
 import Skills from "@/components/Skills";
+import { SkillsTextLoop } from "@/components/skills-textloop";
 import Link from "next/link";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
@@ -20,8 +22,8 @@ export default async function page(props: { searchParams: SearchParams }) {
           👋 Welcome to My Digital Space 👉 Crafting Innovative Solutions.
         </h2>
         <p className="mb-6 text-pretty max-w-prose">
-          Passionate about solving real-world problems through web development,
-          AI, and machine learning. Creating innovative and efficient digital
+          Passionate about solving real-world problems through{" "}
+          <SkillsTextLoop />. <br /> Creating innovative and efficient digital
           solutions that make an impact.{" "}
           <Link
             href="/about"
@@ -39,6 +41,7 @@ export default async function page(props: { searchParams: SearchParams }) {
       <SelectedWorks currentPage={currentPage} />
 
       <Skills />
+      {/* <InfiniteSliderHoverSpeedSkills /> */}
     </div>
   );
 }

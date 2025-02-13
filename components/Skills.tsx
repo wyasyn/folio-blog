@@ -24,6 +24,11 @@ export default function MovingCards() {
       <motion.div
         className="flex items-center gap-12 py-14"
         animate={{ x: [0, -containerWidth] }}
+        whileHover={{
+          transition: {
+            duration: containerWidth / 200, // Adjust speed dynamically
+          },
+        }}
         transition={{
           repeat: Infinity,
           duration: containerWidth / 100, // Adjust speed dynamically
