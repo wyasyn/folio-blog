@@ -1,3 +1,4 @@
+"use client";
 import { TextLoop } from "@/components/core/text-loop";
 
 const mySkillAreas = [

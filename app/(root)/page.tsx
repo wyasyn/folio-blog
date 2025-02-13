@@ -1,4 +1,3 @@
-// import { InfiniteSliderHoverSpeedSkills } from "@/components/infinite-scroll-skills";
 import PrimaryBtn from "@/components/PrimaryBtn";
 import SecondaryBtn from "@/components/SecondaryBtn";
 import SelectedWorks from "@/components/SelectedWorks";
@@ -21,7 +20,7 @@ export default async function page(props: { searchParams: SearchParams }) {
         <h2 className="text-3xl text-balance mb-4 capitalize">
           👋 Welcome to My Digital Space 👉 Crafting Innovative Solutions.
         </h2>
-        <p className="mb-6 text-pretty max-w-prose">
+        <div className="mb-6 text-pretty max-w-prose">
           Passionate about solving real-world problems through{" "}
           <SkillsTextLoop />. <br /> Creating innovative and efficient digital
           solutions that make an impact.{" "}
@@ -31,7 +30,7 @@ export default async function page(props: { searchParams: SearchParams }) {
           >
             Learn more about me →
           </Link>
-        </p>
+        </div>
         <div className="flex flex-col min-[341px]:flex-row items-center gap-4 justify-center md:justify-start">
           <SecondaryBtn text="Explore my work" link="/portfolio" />
           <PrimaryBtn text="Let's connect" link="/contact" />
@@ -41,7 +40,6 @@ export default async function page(props: { searchParams: SearchParams }) {
       <SelectedWorks currentPage={currentPage} />
 
       <Skills />
-      {/* <InfiniteSliderHoverSpeedSkills /> */}
     </div>
   );
 }

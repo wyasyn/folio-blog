@@ -1,3 +1,4 @@
+"use client";
 import { toolsAndTechnologies } from "@/lib/data";
 import { InfiniteSlider } from "./core/infinite-scroll";
 
