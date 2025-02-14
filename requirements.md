@@ -133,3 +133,5 @@ This project involves creating a professional personal website for Yasin Walum, 
 1. Fully functional personal website.
 2. Documentation for future updates and maintenance.
 3. Source code hosted on GitHub.
+
+// TODO: buy a yasin-walum.dev domain from cloudflare
