@@ -95,3 +95,24 @@
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1rem;
 }
+
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+  margin-block: 2rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--muted));
+  border-radius: 100vw;
+  cursor: pointer;
+  border: 2px solid hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--muted-foreground));
+}

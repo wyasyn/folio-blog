@@ -1,5 +1,6 @@
 import PrimaryBtn from "@/components/PrimaryBtn";
 import SecondaryBtn from "@/components/SecondaryBtn";
+import SelectedBlog from "@/components/selected-blog";
 import SelectedWorks from "@/components/SelectedWorks";
 import Skills from "@/components/Skills";
 import { SkillsTextLoop } from "@/components/skills-textloop";
@@ -38,6 +39,7 @@ export default async function page(props: { searchParams: SearchParams }) {
       </div>
 
       <SelectedWorks currentPage={currentPage} />
+      <SelectedBlog currentPage={currentPage} />
 
       <Skills />
     </div>
